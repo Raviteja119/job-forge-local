@@ -147,7 +147,7 @@ const Jobs = () => {
                          job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          job.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesLocation = !locationFilter || job.location.toLowerCase().includes(locationFilter.toLowerCase());
-    const matchesCategory = !categoryFilter || job.category === categoryFilter;
+    const matchesCategory = !categoryFilter || categoryFilter === 'all' || job.category === categoryFilter;
     
     return matchesSearch && matchesLocation && matchesCategory;
   });
@@ -217,7 +217,7 @@ const Jobs = () => {
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     <SelectItem value="Construction">Construction</SelectItem>
                     <SelectItem value="Electrical">Electrical</SelectItem>
                     <SelectItem value="Plumbing">Plumbing</SelectItem>
