@@ -114,7 +114,7 @@ const Profile = () => {
     <div className="min-h-screen py-8 px-4 bg-muted/30">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Header */}
-        <Card className="card-shadow">
+        <Card className="card-shadow hover-glow border-0 animate-fade-in">
           <CardContent className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               <Avatar className="w-24 h-24">

@@ -58,9 +58,9 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative hero-gradient text-white py-20 px-4">
+      <section className="relative hero-gradient text-white py-20 px-4 overflow-hidden">
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-20 transition-slow"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundSize: 'cover',
@@ -68,15 +68,15 @@ const Home = () => {
           }}
         />
         <div className="relative max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in">
             Find Your Next <span className="text-accent-warm">Local Job</span>
           </h1>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90 animate-fade-in stagger-delay-1">
             Connect with local employers seeking skilled workers. From construction to home services, find opportunities that match your skills.
           </p>
           
           {/* Search Bar */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto animate-fade-in stagger-delay-2 hover:bg-white/15 transition-smooth">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-3 h-5 w-5 text-white/60" />
@@ -114,10 +114,10 @@ const Home = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Popular Job Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {jobCategories.map((category) => (
-              <Card key={category.name} className="text-center hover:shadow-lg transition-shadow cursor-pointer">
+            {jobCategories.map((category, index) => (
+              <Card key={category.name} className={`text-center hover-lift cursor-pointer animate-fade-in stagger-delay-${index + 1} hover-glow`}>
                 <CardContent className="p-6">
-                  <div className="text-4xl mb-3">{category.icon}</div>
+                  <div className="text-4xl mb-3 transition-fast hover:scale-110">{category.icon}</div>
                   <h3 className="font-semibold mb-2">{category.name}</h3>
                   <Badge variant="secondary">{category.count} jobs</Badge>
                 </CardContent>
@@ -137,8 +137,8 @@ const Home = () => {
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredJobs.map((job) => (
-              <Card key={job.id} className="card-shadow hover:hover-shadow transition-all duration-300">
+            {featuredJobs.map((job, index) => (
+              <Card key={job.id} className={`card-shadow hover-lift animate-fade-in stagger-delay-${index + 1} hover-glow border-0`}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
@@ -181,32 +181,32 @@ const Home = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">How JobConnect Works</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6" />
+            <div className="text-center animate-fade-in stagger-delay-1">
+              <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-fast shadow-lg">
+                <Users className="w-8 h-8" />
               </div>
-              <h3 className="font-semibold mb-2">Create Profile</h3>
+              <h3 className="font-semibold mb-2 text-lg">Create Profile</h3>
               <p className="text-muted-foreground">Sign up and showcase your skills and experience</p>
             </div>
-            <div className="text-center">
-              <div className="bg-success text-success-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6" />
+            <div className="text-center animate-fade-in stagger-delay-2">
+              <div className="bg-success text-success-foreground w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-fast shadow-lg">
+                <Search className="w-8 h-8" />
               </div>
-              <h3 className="font-semibold mb-2">Browse Jobs</h3>
+              <h3 className="font-semibold mb-2 text-lg">Browse Jobs</h3>
               <p className="text-muted-foreground">Search and filter jobs that match your skills</p>
             </div>
-            <div className="text-center">
-              <div className="bg-accent-warm text-accent-warm-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-6 h-6" />
+            <div className="text-center animate-fade-in stagger-delay-3">
+              <div className="bg-accent-warm text-accent-warm-foreground w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-fast shadow-lg">
+                <CheckCircle className="w-8 h-8" />
               </div>
-              <h3 className="font-semibold mb-2">Apply & Connect</h3>
+              <h3 className="font-semibold mb-2 text-lg">Apply & Connect</h3>
               <p className="text-muted-foreground">Apply to jobs and connect with employers</p>
             </div>
-            <div className="text-center">
-              <div className="bg-primary text-primary-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-6 h-6" />
+            <div className="text-center animate-fade-in stagger-delay-4">
+              <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-fast shadow-lg">
+                <Star className="w-8 h-8" />
               </div>
-              <h3 className="font-semibold mb-2">Build Rating</h3>
+              <h3 className="font-semibold mb-2 text-lg">Build Rating</h3>
               <p className="text-muted-foreground">Complete jobs and build your reputation</p>
             </div>
           </div>

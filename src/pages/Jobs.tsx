@@ -190,26 +190,26 @@ const Jobs = () => {
         </div>
 
         {/* Search and Filters */}
-        <Card className="card-shadow">
+        <Card className="card-shadow animate-fade-in hover-glow border-0">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground transition-fast" />
                   <Input
                     placeholder="Search jobs by title, company, or skill..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 transition-fast focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground transition-fast" />
                   <Input
                     placeholder="Location..."
                     value={locationFilter}
                     onChange={(e) => setLocationFilter(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 transition-fast focus:ring-2 focus:ring-primary/20"
                   />
                 </div>
                 <Select onValueChange={setCategoryFilter}>
@@ -249,8 +249,8 @@ const Jobs = () => {
 
         {/* Job Listings */}
         <div className="space-y-6">
-          {filteredJobs.map((job) => (
-            <Card key={job.id} className="card-shadow hover:hover-shadow transition-all duration-300">
+          {filteredJobs.map((job, index) => (
+            <Card key={job.id} className={`card-shadow hover-lift animate-fade-in border-0 hover-glow stagger-delay-${Math.min(index + 1, 6)}`}>
               <CardContent className="p-6">
                 <div className="space-y-4">
                   {/* Job Header */}
@@ -310,27 +310,27 @@ const Jobs = () => {
                     <p className="text-muted-foreground">{job.description}</p>
                     
                     <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="font-semibold mb-2">Required Skills</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {job.skills.map((skill) => (
-                            <Badge key={skill} variant="outline" className="text-xs">
-                              {skill}
-                            </Badge>
-                          ))}
+                        <div>
+                          <h4 className="font-semibold mb-2 text-primary">Required Skills</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {job.skills.map((skill) => (
+                              <Badge key={skill} variant="outline" className="text-xs hover:bg-primary hover:text-primary-foreground transition-fast">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-2">Benefits</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {job.benefits.map((benefit) => (
-                            <Badge key={benefit} variant="secondary" className="text-xs">
-                              {benefit}
-                            </Badge>
-                          ))}
+                        
+                        <div>
+                          <h4 className="font-semibold mb-2 text-success">Benefits</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {job.benefits.map((benefit) => (
+                              <Badge key={benefit} variant="secondary" className="text-xs">
+                                {benefit}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                      </div>
                     </div>
                   </div>
 
@@ -349,12 +349,14 @@ const Jobs = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        className="transition-smooth"
+                        className="transition-smooth hover:border-primary hover:text-primary"
                       >
                         View Details
                       </Button>
                       <Button 
                         onClick={() => handleApply(job.id, job.title)}
+                        variant="hero"
+                        size="sm"
                         className="transition-smooth"
                       >
                         Apply Now
@@ -368,9 +370,9 @@ const Jobs = () => {
         </div>
 
         {filteredJobs.length === 0 && (
-          <Card className="card-shadow">
+          <Card className="card-shadow animate-fade-in border-0">
             <CardContent className="p-12 text-center">
-              <Briefcase className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <Briefcase className="w-16 h-16 text-muted-foreground mx-auto mb-4 animate-scale-in" />
               <h3 className="text-xl font-semibold mb-2">No jobs found</h3>
               <p className="text-muted-foreground">
                 Try adjusting your search criteria or check back later for new opportunities.

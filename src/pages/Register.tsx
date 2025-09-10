@@ -76,7 +76,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-muted/30">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-8 animate-fade-in">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-foreground">Join JobConnect</h2>
           <p className="mt-2 text-muted-foreground">
@@ -84,7 +84,7 @@ const Register = () => {
           </p>
         </div>
 
-        <Card className="card-shadow">
+        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Register</CardTitle>
             <CardDescription className="text-center">

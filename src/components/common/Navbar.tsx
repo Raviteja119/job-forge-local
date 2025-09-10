@@ -9,13 +9,13 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="bg-card border-b border-border shadow-sm sticky top-0 z-50">
+    <nav className="bg-card/95 backdrop-blur-sm border-b border-border shadow-sm sticky top-0 z-50 transition-slow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <Briefcase className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">JobConnect</span>
+          <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-fast">
+            <Briefcase className="h-8 w-8 text-primary hover:rotate-12 transition-fast" />
+            <span className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-accent-warm bg-clip-text text-transparent">JobConnect</span>
           </Link>
 
           {/* Navigation Links */}
