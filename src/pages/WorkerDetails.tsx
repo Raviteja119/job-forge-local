@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import workerDetailsBg from '@/assets/worker-details-bg.jpg';
 
 const WorkerDetails = () => {
   const navigate = useNavigate();
@@ -107,16 +108,25 @@ const WorkerDetails = () => {
     formData.city;
 
   return (
-    <div className="min-h-screen py-12 px-4 bg-muted/30">
-      <div className="max-w-2xl mx-auto space-y-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">Complete Your Profile</h2>
-          <p className="mt-2 text-muted-foreground">
+    <div 
+      className="min-h-screen py-12 px-4 relative animate-fade-in"
+      style={{
+        backgroundImage: `url(${workerDetailsBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-muted/40 backdrop-blur-sm"></div>
+      <div className="max-w-2xl mx-auto space-y-8 relative z-10">
+        <div className="text-center animate-slide-up">
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Complete Your Profile</h2>
+          <p className="mt-2 text-white/90 drop-shadow">
             Tell us about your skills and experience to get better job matches
           </p>
         </div>
 
-        <Card className="card-shadow">
+        <Card className="card-shadow bg-card/95 backdrop-blur-md border-0">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Briefcase className="w-5 h-5" />

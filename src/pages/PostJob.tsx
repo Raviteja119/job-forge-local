@@ -13,6 +13,7 @@ import {
   FileText, X, Briefcase, Plus
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import postJobBg from '@/assets/post-job-bg.jpg';
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -121,19 +122,28 @@ const PostJob = () => {
     formData.contactEmail;
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-muted/30">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div 
+      className="min-h-screen py-8 px-4 relative animate-fade-in"
+      style={{
+        backgroundImage: `url(${postJobBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm"></div>
+      <div className="max-w-4xl mx-auto space-y-8 relative z-10">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Post a Job</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center space-y-4 animate-slide-up">
+          <h1 className="text-4xl font-bold text-white drop-shadow-lg">Post a Job</h1>
+          <p className="text-white/90 max-w-2xl mx-auto drop-shadow">
             Find the right talent for your project. Post your job requirements and connect with skilled workers.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Job Information */}
-          <Card className="card-shadow">
+          <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-1">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5" />
@@ -251,7 +261,7 @@ const PostJob = () => {
           </Card>
 
           {/* Location & Duration */}
-          <Card className="card-shadow">
+          <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MapPin className="w-5 h-5" />
@@ -335,7 +345,7 @@ const PostJob = () => {
           </Card>
 
           {/* Compensation */}
-          <Card className="card-shadow">
+          <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-3">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
@@ -405,7 +415,7 @@ const PostJob = () => {
           </Card>
 
           {/* Company Information */}
-          <Card className="card-shadow">
+          <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-4">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Building className="w-5 h-5" />

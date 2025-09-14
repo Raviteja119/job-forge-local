@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Briefcase, User, LogIn, UserPlus, FileText, Phone } from 'lucide-react';
+import navbarPattern from '@/assets/navbar-pattern.jpg';
 
 const Navbar = () => {
   const location = useLocation();
@@ -9,13 +10,27 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="bg-card/95 backdrop-blur-sm border-b border-border shadow-sm sticky top-0 z-50 transition-slow">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav 
+      className="sticky top-0 z-50 transition-slow border-b border-border shadow-lg relative"
+      style={{
+        backgroundImage: `url(${navbarPattern})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundBlendMode: 'overlay'
+      }}
+    >
+      <div className="absolute inset-0 bg-card/90 backdrop-blur-md"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-fast">
-            <Briefcase className="h-8 w-8 text-primary hover:rotate-12 transition-fast" />
-            <span className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-accent-warm bg-clip-text text-transparent">JobConnect</span>
+          <Link to="/" className="flex items-center space-x-2 hover:scale-105 transition-fast group">
+            <div className="relative">
+              <Briefcase className="h-8 w-8 text-primary hover:rotate-12 transition-fast drop-shadow-sm" />
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/30 transition-fast"></div>
+            </div>
+            <span className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-accent-warm bg-clip-text text-transparent drop-shadow-sm">
+              JobConnect
+            </span>
           </Link>
 
           {/* Navigation Links */}

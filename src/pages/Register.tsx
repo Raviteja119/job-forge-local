@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, User, Mail, Phone, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import registerBg from '@/assets/register-bg.jpg';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -75,16 +76,25 @@ const Register = () => {
     formData.agreeToTerms;
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-muted/30">
-      <div className="max-w-md w-full space-y-8 animate-fade-in">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">Join JobConnect</h2>
-          <p className="mt-2 text-muted-foreground">
+    <div 
+      className="min-h-screen flex items-center justify-center py-12 px-4 relative animate-fade-in"
+      style={{
+        backgroundImage: `url(${registerBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-accent-warm/20 backdrop-blur-sm"></div>
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center animate-slide-up">
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Join JobConnect</h2>
+          <p className="mt-2 text-white/90 drop-shadow">
             Create your account to start finding jobs
           </p>
         </div>
 
-        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1">
+        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1 bg-card/95 backdrop-blur-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Register</CardTitle>
             <CardDescription className="text-center">

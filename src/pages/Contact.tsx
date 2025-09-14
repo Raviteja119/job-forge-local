@@ -14,6 +14,7 @@ import {
   Database, Zap
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import contactBg from '@/assets/contact-bg.jpg';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -146,12 +147,21 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-muted/30">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div 
+      className="min-h-screen py-8 px-4 relative animate-fade-in"
+      style={{
+        backgroundImage: `url(${contactBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-success/20 backdrop-blur-sm"></div>
+      <div className="max-w-6xl mx-auto space-y-12 relative z-10">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Contact Us</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center space-y-4 animate-slide-up">
+          <h1 className="text-4xl font-bold text-white drop-shadow-lg">Contact Us</h1>
+          <p className="text-white/90 max-w-2xl mx-auto drop-shadow">
             Get in touch with our team or find answers to your questions. We're here to help you succeed!
           </p>
         </div>
@@ -159,7 +169,7 @@ const Contact = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <Card className="card-shadow">
+            <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-1">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MessageCircle className="w-5 h-5" />
@@ -244,7 +254,7 @@ const Contact = () => {
 
           {/* Contact Information */}
           <div className="space-y-6">
-            <Card className="card-shadow">
+            <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-2">
               <CardHeader>
                 <CardTitle>Get in Touch</CardTitle>
                 <CardDescription>
@@ -281,7 +291,7 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            <Card className="card-shadow">
+            <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-scale-in stagger-delay-3">
               <CardHeader>
                 <CardTitle>Business Hours</CardTitle>
               </CardHeader>
@@ -314,7 +324,7 @@ const Contact = () => {
 
           <div className="grid md:grid-cols-2 gap-6">
             {developers.map((developer) => (
-              <Card key={developer.id} className="card-shadow hover:hover-shadow transition-all duration-300">
+              <Card key={developer.id} className="card-shadow hover:hover-shadow transition-all duration-300 bg-card/95 backdrop-blur-md border-0">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <Avatar className="w-16 h-16">
@@ -389,7 +399,7 @@ const Contact = () => {
             </p>
           </div>
 
-          <Card className="card-shadow">
+          <Card className="card-shadow bg-card/95 backdrop-blur-md border-0 animate-fade-in stagger-delay-4">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HelpCircle className="w-5 h-5" />

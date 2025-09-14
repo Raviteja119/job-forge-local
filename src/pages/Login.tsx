@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import loginBg from '@/assets/login-bg.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -47,16 +48,25 @@ const Login = () => {
   const isFormValid = formData.email && formData.password;
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-muted/30">
-      <div className="max-w-md w-full space-y-8 animate-fade-in">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-foreground">Welcome Back</h2>
-          <p className="mt-2 text-muted-foreground">
+    <div 
+      className="min-h-screen flex items-center justify-center py-12 px-4 relative animate-fade-in"
+      style={{
+        backgroundImage: `url(${loginBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm"></div>
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center animate-slide-up">
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Welcome Back</h2>
+          <p className="mt-2 text-white/90 drop-shadow">
             Sign in to your JobConnect account
           </p>
         </div>
 
-        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1">
+        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1 bg-card/95 backdrop-blur-md">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Login</CardTitle>
             <CardDescription className="text-center">
