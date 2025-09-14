@@ -48,28 +48,26 @@ const Login = () => {
   const isFormValid = formData.email && formData.password;
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center py-12 px-4 relative animate-fade-in"
-      style={{
-        backgroundImage: `url(${loginBg})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
-      <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm"></div>
-      <div className="max-w-md w-full space-y-8 relative z-10">
+    <div className="min-h-screen form-container flex items-center justify-center py-12 px-4 animate-fade-in">
+      <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center animate-slide-up">
-          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Welcome Back</h2>
-          <p className="mt-2 text-white/90 drop-shadow">
+          <div className="mb-6">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <span className="text-blue-600 font-bold text-lg">J</span>
+              </div>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+          <p className="text-white/80">
             Sign in to your JobConnect account
           </p>
         </div>
 
-        <Card className="card-shadow hover-glow border-0 animate-scale-in stagger-delay-1 bg-card/95 backdrop-blur-md">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Login</CardTitle>
-            <CardDescription className="text-center">
+        <Card className="form-card border-0 animate-scale-in stagger-delay-1">
+          <CardHeader className="space-y-2 pb-6">
+            <CardTitle className="text-2xl text-center font-semibold text-slate-800">Sign In</CardTitle>
+            <CardDescription className="text-center text-slate-600">
               Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
@@ -77,40 +75,36 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email or Username</Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="email"
                       name="email"
                       type="text"
-                      placeholder="Enter your email or username"
+                      placeholder="Email or Username"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="pl-10"
+                      className="form-input border-0 bg-white/80 placeholder:text-slate-400 text-slate-700 rounded-xl py-3 px-4"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="password"
                       name="password"
                       type={showPassword ? 'text' : 'password'}
-                      placeholder="Enter your password"
+                      placeholder="Password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="pl-10 pr-10"
+                      className="form-input border-0 bg-white/80 placeholder:text-slate-400 text-slate-700 rounded-xl py-3 px-4 pr-12"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -130,13 +124,13 @@ const Login = () => {
                         setFormData(prev => ({ ...prev, rememberMe: checked as boolean }))
                       }
                     />
-                    <Label htmlFor="rememberMe" className="text-sm">
+                    <Label htmlFor="rememberMe" className="text-sm text-slate-600">
                       Remember me
                     </Label>
                   </div>
                   <Link
                     to="/forgot-password"
-                    className="text-sm text-primary hover:underline"
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                   >
                     Forgot password?
                   </Link>
@@ -145,41 +139,33 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="form-button w-full border-0 text-white font-semibold py-3 rounded-xl"
                 disabled={!isFormValid || isLoading}
               >
                 {isLoading ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
 
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-muted-foreground/20" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="bg-card px-2 text-muted-foreground">
-                    Don't have an account?
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center">
-                <Link to="/register">
-                  <Button variant="outline" className="w-full">
-                    Create new account
-                  </Button>
-                </Link>
+            <div className="mt-8">
+              <div className="text-center">
+                <span className="text-slate-600 text-sm">
+                  Don't have an account?{' '}
+                  <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+                    Sign up
+                  </Link>
+                </span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Alert>
-          <AlertDescription>
-            <strong>Demo credentials:</strong> Use any email and password to test the login functionality.
-          </AlertDescription>
-        </Alert>
+        <div className="text-center">
+          <div className="bg-white/20 backdrop-blur-md rounded-lg p-3">
+            <p className="text-white/90 text-sm">
+              <strong>Demo:</strong> Use any email and password to test
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -15,10 +15,18 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    /* Professional blue primary */
-    --primary: 217 91% 60%;
+    /* Modern Blue Gradient System */
+    --primary: 220 100% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 217 91% 55%;
+    --primary-hover: 220 100% 60%;
+    
+    --blue-light: 210 100% 85%;
+    --blue-medium: 220 100% 65%;
+    --blue-deep: 230 90% 50%;
+    
+    --gradient-blue: linear-gradient(135deg, hsl(var(--blue-light)), hsl(var(--blue-medium)));
+    --gradient-blue-deep: linear-gradient(135deg, hsl(var(--blue-medium)), hsl(var(--blue-deep)));
+    --gradient-form: linear-gradient(135deg, hsl(220 100% 95%), hsl(0 0% 100%));
 
     /* Success green */
     --success: 142 71% 45%;
@@ -51,6 +59,11 @@
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
     --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--success-hover)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-warm)));
+    
+    /* Form specific gradients and shadows */
+    --form-shadow: 0 20px 40px -10px hsl(var(--blue-medium) / 0.2);
+    --input-shadow: 0 2px 8px hsl(var(--blue-medium) / 0.1);
+    --button-shadow: 0 8px 25px hsl(var(--blue-medium) / 0.3);
 
     /* Shadows */
     --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -162,6 +175,37 @@
   
   .hover-glow:hover {
     box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  
+  /* Modern form styles */
+  .form-container {
+    background: var(--gradient-blue);
+  }
+  
+  .form-card {
+    background: var(--gradient-form);
+    box-shadow: var(--form-shadow);
+    backdrop-filter: blur(10px);
+  }
+  
+  .form-input {
+    box-shadow: var(--input-shadow);
+    transition: var(--transition-fast);
+  }
+  
+  .form-input:focus {
+    box-shadow: 0 0 0 3px hsl(var(--blue-light) / 0.5), var(--input-shadow);
+  }
+  
+  .form-button {
+    background: var(--gradient-blue-deep);
+    box-shadow: var(--button-shadow);
+    transition: var(--transition-fast);
+  }
+  
+  .form-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px hsl(var(--blue-medium) / 0.4);
   }
   
   /* Staggered animations */
