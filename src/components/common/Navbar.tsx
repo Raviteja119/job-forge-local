@@ -1,13 +1,19 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Briefcase, User, LogIn, UserPlus, FileText, Phone } from 'lucide-react';
+import { Briefcase, User, LogIn, UserPlus, FileText, Phone, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import navbarPattern from '@/assets/navbar-pattern.jpg';
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    await signOut();
+  };
 
   return (
     <nav 
@@ -92,27 +98,46 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="flex items-center space-x-2">
-            <Link to="/login">
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="transition-smooth"
-              >
-                <LogIn className="w-4 h-4 mr-2" />
-                Login
-              </Button>
-            </Link>
-            
-            <Link to="/register">
-              <Button 
-                variant="success" 
-                size="sm"
-                className="transition-smooth"
-              >
-                <UserPlus className="w-4 h-4 mr-2" />
-                Register
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <span className="text-sm text-foreground/80 hidden md:block">
+                  Welcome, {user.email}
+                </span>
+                <Button 
+                  onClick={handleLogout}
+                  variant="outline" 
+                  size="sm"
+                  className="transition-smooth"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="transition-smooth"
+                  >
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Login
+                  </Button>
+                </Link>
+                
+                <Link to="/register">
+                  <Button 
+                    variant="success" 
+                    size="sm"
+                    className="transition-smooth"
+                  >
+                    <UserPlus className="w-4 h-4 mr-2" />
+                    Register
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button (for future mobile implementation) */}
