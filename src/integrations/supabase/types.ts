@@ -184,6 +184,48 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          jobs_applied: number | null
+          jobs_completed: number | null
+          mobile_number: string | null
+          rating: number | null
+          success_rate: number | null
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          jobs_applied?: number | null
+          jobs_completed?: number | null
+          mobile_number?: string | null
+          rating?: number | null
+          success_rate?: number | null
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          jobs_applied?: number | null
+          jobs_completed?: number | null
+          mobile_number?: string | null
+          rating?: number | null
+          success_rate?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
       User: {
         Row: {
           email_id: string | null
