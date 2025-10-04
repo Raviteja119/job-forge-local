@@ -7,7 +7,11 @@ import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import RegisterSelection from "./pages/RegisterSelection";
 import WorkerDetails from "./pages/WorkerDetails";
+import EmployerDetails from "./pages/EmployerDetails";
+import WorkerDashboard from "./pages/WorkerDashboard";
+import EmployerDashboard from "./pages/EmployerDashboard";
 import Profile from "./pages/Profile";
 import Jobs from "./pages/Jobs";
 import PostJob from "./pages/PostJob";
@@ -29,8 +33,12 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register-selection" element={<RegisterSelection />} />
               <Route path="/register" element={<Register />} />
               <Route path="/worker-details" element={<WorkerDetails />} />
+              <Route path="/employer-details" element={<EmployerDetails />} />
+              <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+              <Route path="/employer-dashboard" element={<EmployerDashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/post-job" element={<PostJob />} />

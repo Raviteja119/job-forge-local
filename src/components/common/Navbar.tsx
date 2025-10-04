@@ -7,7 +7,7 @@ import navbarPattern from '@/assets/navbar-pattern.jpg';
 
 const Navbar = () => {
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, userRole, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -62,27 +62,31 @@ const Navbar = () => {
               </Button>
             </Link>
             
-            <Link to="/post-job">
-              <Button 
-                variant={isActive('/post-job') ? "default" : "ghost"} 
-                size="sm"
-                className="transition-smooth"
-              >
-                <FileText className="w-4 h-4 mr-2" />
-                Post a Job
-              </Button>
-            </Link>
+            {userRole === 'employer' && (
+              <Link to="/post-job">
+                <Button 
+                  variant={isActive('/post-job') ? "default" : "ghost"} 
+                  size="sm"
+                  className="transition-smooth"
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  Post a Job
+                </Button>
+              </Link>
+            )}
             
-            <Link to="/profile">
-              <Button 
-                variant={isActive('/profile') ? "default" : "ghost"} 
-                size="sm"
-                className="transition-smooth"
-              >
-                <User className="w-4 h-4 mr-2" />
-                Profile
-              </Button>
-            </Link>
+            {user && (
+              <Link to={userRole === 'employer' ? '/employer-dashboard' : '/worker-dashboard'}>
+                <Button 
+                  variant={isActive('/worker-dashboard') || isActive('/employer-dashboard') ? "default" : "ghost"} 
+                  size="sm"
+                  className="transition-smooth"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
+            )}
             
             <Link to="/contact">
               <Button 
@@ -126,7 +130,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 
-                <Link to="/register">
+                <Link to="/register-selection">
                   <Button 
                     variant="success" 
                     size="sm"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +11,9 @@ import registerBg from '@/assets/register-bg.jpg';
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signUp, signInWithGoogle, signInWithGithub, user, loading } = useAuth();
+  const role = (location.state as any)?.role as 'worker' | 'employer' | undefined;
   const [formData, setFormData] = useState({
     username: '',
     mobile: '',
@@ -56,11 +58,12 @@ const Register = () => {
       formData.email, 
       formData.password, 
       formData.username, 
-      formData.mobile
+      formData.mobile,
+      role
     );
     
     if (!error) {
-      navigate('/worker-details');
+      navigate(role === 'employer' ? '/employer-details' : '/worker-details');
     }
     
     setIsLoading(false);

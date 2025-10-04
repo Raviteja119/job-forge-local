@@ -7,11 +7,15 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, username?: string, mobile?: string) => Promise<{ error: any }>;
+  userRole: 'worker' | 'employer' | null;
+  signUp: (email: string, password: string, username?: string, mobile?: string, role?: 'worker' | 'employer') => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signInWithGithub: () => Promise<{ error: any }>;
+  setUserRole: (role: 'worker' | 'employer') => void;
+  isWorker: () => boolean;
+  isEmployer: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,6 +36,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userRole, setUserRoleState] = useState<'worker' | 'employer' | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -40,6 +45,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        // Load role from localStorage
+        if (session?.user) {
+          const savedRole = localStorage.getItem(`user_role_${session.user.id}`) as 'worker' | 'employer' | null;
+          setUserRoleState(savedRole);
+        } else {
+          setUserRoleState(null);
+        }
         setLoading(false);
       }
     );
@@ -48,43 +60,67 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      // Load role from localStorage
+      if (session?.user) {
+        const savedRole = localStorage.getItem(`user_role_${session.user.id}`) as 'worker' | 'employer' | null;
+        setUserRoleState(savedRole);
+      }
       setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, username?: string, mobile?: string) => {
+  const setUserRole = (role: 'worker' | 'employer') => {
+    setUserRoleState(role);
+    if (user) {
+      localStorage.setItem(`user_role_${user.id}`, role);
+    }
+  };
+
+  const isWorker = () => userRole === 'worker';
+  const isEmployer = () => userRole === 'employer';
+
+  const signUp = async (email: string, password: string, username?: string, mobile?: string, role?: 'worker' | 'employer') => {
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
           data: {
             username,
-            mobile_number: mobile,
+            mobile,
           }
         }
       });
 
       if (error) {
         toast({
-          title: "Sign Up Error",
+          title: "Registration Failed",
           description: error.message,
           variant: "destructive",
         });
-      } else {
-        toast({
-          title: "Success!",
-          description: "Please check your email to verify your account.",
-        });
+        return { error };
       }
 
-      return { error };
+      if (data.user && role) {
+        // Save role to localStorage
+        localStorage.setItem(`user_role_${data.user.id}`, role);
+        setUserRoleState(role);
+      }
+
+      toast({
+        title: "Registration Successful!",
+        description: "Welcome to JobConnect! Please complete your profile.",
+      });
+
+      return { error: null };
     } catch (error: any) {
+      toast({
+        title: "Registration Failed",
+        description: error.message || "An error occurred during registration",
+        variant: "destructive",
+      });
       return { error };
     }
   };
@@ -188,11 +224,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     user,
     session,
     loading,
+    userRole,
     signUp,
     signIn,
     signOut,
     signInWithGoogle,
     signInWithGithub,
+    setUserRole,
+    isWorker,
+    isEmployer,
   };
 
   return (

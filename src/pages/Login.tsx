@@ -12,7 +12,7 @@ import loginBg from '@/assets/login-bg.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { signIn, signInWithGoogle, signInWithGithub, user, loading } = useAuth();
+  const { signIn, signInWithGoogle, signInWithGithub, user, userRole, loading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -43,7 +43,17 @@ const Login = () => {
     const { error } = await signIn(formData.email, formData.password);
     
     if (!error) {
-      navigate('/');
+      // Redirect based on role
+      setTimeout(() => {
+        const role = localStorage.getItem(`user_role_${user?.id}`);
+        if (role === 'employer') {
+          navigate('/employer-dashboard');
+        } else if (role === 'worker') {
+          navigate('/worker-dashboard');
+        } else {
+          navigate('/register-selection');
+        }
+      }, 100);
     }
     
     setIsLoading(false);
@@ -199,7 +209,7 @@ const Login = () => {
               <div className="text-center">
                 <span className="text-slate-600 text-sm">
                   Don't have an account?{' '}
-                  <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+                  <Link to="/register-selection" className="text-blue-600 hover:text-blue-700 font-medium">
                     Sign up
                   </Link>
                 </span>
