@@ -118,7 +118,7 @@ const EmployerDetails = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="companyType">Company Type *</Label>
-                    <Select onValueChange={(value) => setFormData(prev => ({ ...prev, companyType: value }))}>
+                    <Select value={formData.companyType} onValueChange={(value) => setFormData(prev => ({ ...prev, companyType: value }))}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
@@ -149,7 +149,7 @@ const EmployerDetails = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="companySize">Company Size</Label>
-                    <Select onValueChange={(value) => setFormData(prev => ({ ...prev, companySize: value }))}>
+                    <Select value={formData.companySize} onValueChange={(value) => setFormData(prev => ({ ...prev, companySize: value }))}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select size" />
                       </SelectTrigger>

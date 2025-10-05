@@ -3,17 +3,29 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+interface UserProfile {
+  username: string;
+  mobile: string;
+  profilePhotoUrl: string;
+  preferredJobRoles: string[];
+  address: string;
+  experience: string;
+  description: string;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   userRole: 'worker' | 'employer' | null;
+  userProfile: UserProfile | null;
   signUp: (email: string, password: string, username?: string, mobile?: string, role?: 'worker' | 'employer') => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<{ error: any }>;
   signInWithGoogle: () => Promise<{ error: any }>;
   signInWithGithub: () => Promise<{ error: any }>;
   setUserRole: (role: 'worker' | 'employer') => void;
+  updateUserProfile: (profile: Partial<UserProfile>) => void;
   isWorker: () => boolean;
   isEmployer: () => boolean;
 }
@@ -37,6 +49,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRoleState] = useState<'worker' | 'employer' | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -47,10 +60,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setSession(mockSession);
       setUser(mockSession.user);
       
-      // Load role from localStorage
+      // Load role and profile from localStorage
       if (mockSession.user) {
         const savedRole = localStorage.getItem(`user_role_${mockSession.user.id}`) as 'worker' | 'employer' | null;
         setUserRoleState(savedRole);
+
+        const savedProfile = localStorage.getItem(`user_profile_${mockSession.user.id}`);
+        if (savedProfile) {
+          setUserProfile(JSON.parse(savedProfile));
+        } else {
+          // Initialize default profile
+          const defaultProfile: UserProfile = {
+            username: mockSession.user.user_metadata?.username || mockSession.user.email?.split('@')[0] || '',
+            mobile: mockSession.user.user_metadata?.mobile || '',
+            profilePhotoUrl: '',
+            preferredJobRoles: [],
+            address: '',
+            experience: '',
+            description: ''
+          };
+          setUserProfile(defaultProfile);
+          localStorage.setItem(`user_profile_${mockSession.user.id}`, JSON.stringify(defaultProfile));
+        }
       }
     }
     setLoading(false);
@@ -60,6 +91,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUserRoleState(role);
     if (user) {
       localStorage.setItem(`user_role_${user.id}`, role);
+    }
+  };
+
+  const updateUserProfile = (profile: Partial<UserProfile>) => {
+    if (user) {
+      const updatedProfile = { ...userProfile, ...profile } as UserProfile;
+      setUserProfile(updatedProfile);
+      localStorage.setItem(`user_profile_${user.id}`, JSON.stringify(updatedProfile));
     }
   };
 
@@ -85,6 +124,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.setItem(`user_role_${userId}`, role);
         setUserRoleState(role);
       }
+
+      // Initialize default profile
+      const defaultProfile: UserProfile = {
+        username: username || email.split('@')[0],
+        mobile: mobile || '',
+        profilePhotoUrl: '',
+        preferredJobRoles: [],
+        address: '',
+        experience: '',
+        description: ''
+      };
+      setUserProfile(defaultProfile);
+      localStorage.setItem(`user_profile_${userId}`, JSON.stringify(defaultProfile));
 
       setUser(mockUser as any);
       setSession({ access_token: 'mock_token', user: mockUser } as any);
@@ -127,9 +179,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(mockUser);
       setSession(mockSession as any);
 
-      // Load role
+      // Load role and profile
       const savedRole = localStorage.getItem(`user_role_${mockUser.id}`) as 'worker' | 'employer' | null;
       setUserRoleState(savedRole);
+
+      const savedProfile = localStorage.getItem(`user_profile_${mockUser.id}`);
+      if (savedProfile) {
+        setUserProfile(JSON.parse(savedProfile));
+      }
 
       toast({
         title: "Welcome back!",
@@ -155,6 +212,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
       setSession(null);
       setUserRoleState(null);
+      setUserProfile(null);
 
       toast({
         title: "Signed out",
@@ -190,12 +248,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     session,
     loading,
     userRole,
+    userProfile,
     signUp,
     signIn,
     signOut,
     signInWithGoogle,
     signInWithGithub,
     setUserRole,
+    updateUserProfile,
     isWorker,
     isEmployer,
   };
