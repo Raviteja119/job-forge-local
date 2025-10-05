@@ -43,17 +43,27 @@ const Login = () => {
     const { error } = await signIn(formData.email, formData.password);
     
     if (!error) {
-      // Redirect based on role
-      setTimeout(() => {
-        const role = localStorage.getItem(`user_role_${user?.id}`);
-        if (role === 'employer') {
-          navigate('/employer-dashboard');
-        } else if (role === 'worker') {
-          navigate('/worker-dashboard');
-        } else {
-          navigate('/register-selection');
-        }
-      }, 100);
+      // Check for redirect URL in sessionStorage
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      
+      if (redirectUrl) {
+        // Clear the stored redirect
+        sessionStorage.removeItem('redirectAfterLogin');
+        // Navigate to the stored URL
+        navigate(redirectUrl);
+      } else {
+        // Default redirect based on role
+        setTimeout(() => {
+          const role = localStorage.getItem(`user_role_${user?.id}`);
+          if (role === 'employer') {
+            navigate('/employer-dashboard');
+          } else if (role === 'worker') {
+            navigate('/worker-dashboard');
+          } else {
+            navigate('/register-selection');
+          }
+        }, 100);
+      }
     }
     
     setIsLoading(false);

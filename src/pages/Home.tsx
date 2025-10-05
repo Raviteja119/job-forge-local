@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Search, MapPin, Briefcase, Users, FileText, CheckCircle, Building2, Wrench, Code, Palette } from 'lucide-react';
+import { Search, MapPin, Building2, Wrench, Code, Palette } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import heroImage from '@/assets/hero-image.jpg';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
 
@@ -17,6 +19,16 @@ const Home = () => {
       navigate(`/jobs?search=${searchQuery}&location=${location}`);
     } else {
       navigate('/jobs');
+    }
+  };
+
+  const handleCategoryClick = (categoryName: string) => {
+    if (!user) {
+      // Store the intended category in sessionStorage
+      sessionStorage.setItem('redirectAfterLogin', `/jobs?category=${encodeURIComponent(categoryName)}`);
+      navigate('/login');
+    } else {
+      navigate(`/jobs?category=${encodeURIComponent(categoryName)}`);
     }
   };
 
@@ -64,9 +76,9 @@ const Home = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Popular Job Categories</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {jobCategories.map((cat) => (
-              <Card key={cat.name} className="hover:shadow-lg cursor-pointer" onClick={() => navigate(`/jobs?category=${cat.name}`)}>
+              <Card key={cat.name} className="hover:shadow-lg cursor-pointer transition-all group" onClick={() => handleCategoryClick(cat.name)}>
                 <CardContent className="p-6">
-                  <div className={`${cat.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}>
+                  <div className={`${cat.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                     <cat.icon className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-lg">{cat.name}</h3>
