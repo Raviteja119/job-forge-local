@@ -13,10 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import {
-  Search, MapPin, Star, Award, Clock, Briefcase,
-  CheckCircle2, MessageSquare, Phone, Mail, TrendingUp
-} from 'lucide-react';
+import { Search, MapPin, Star, Award, Clock, Briefcase, CircleCheck as CheckCircle2, MessageSquare, Phone, Mail, TrendingUp } from 'lucide-react';
 import { sampleWorkers, WorkerProfile } from '@/data/sampleWorkers';
 import { useToast } from '@/hooks/use-toast';
 

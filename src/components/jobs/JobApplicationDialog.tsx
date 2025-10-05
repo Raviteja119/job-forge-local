@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Building, MapPin, DollarSign, Clock, CheckCircle2 } from 'lucide-react';
+import { Building, MapPin, DollarSign, Clock, CircleCheck as CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface JobApplicationDialogProps {

@@ -9,10 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import {
-  Building, MapPin, DollarSign, Clock, Calendar, Star,
-  CheckCircle2, Briefcase, Users, TrendingUp
-} from 'lucide-react';
+import { Building, MapPin, DollarSign, Clock, Calendar, Star, CircleCheck as CheckCircle2, Briefcase, Users, TrendingUp } from 'lucide-react';
 
 interface JobDetailsDialogProps {
   open: boolean;
