@@ -7,7 +7,7 @@ import navbarPattern from '@/assets/navbar-pattern.jpg';
 
 const Navbar = () => {
   const location = useLocation();
-  const { user, userRole, signOut } = useAuth();
+  const { user, userRole, userProfile, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -39,8 +39,8 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-1">
+          {/* Navigation Links - Horizontal Scrollable */}
+          <div className="hidden md:flex items-center overflow-x-auto space-x-1 max-w-2xl scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
             <Link to="/">
               <Button 
                 variant={isActive('/') ? "default" : "ghost"} 
@@ -116,8 +116,8 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             {user ? (
               <>
-                <span className="text-sm text-foreground/80 hidden md:block">
-                  Welcome, {user.email}
+                <span className="text-sm text-foreground/80 hidden lg:block font-medium">
+                  Welcome, {userProfile?.username || user.email?.split('@')[0] || 'User'}
                 </span>
                 <Button 
                   onClick={handleLogout}
