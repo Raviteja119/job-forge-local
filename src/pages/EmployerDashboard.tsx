@@ -5,10 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Building2, Mail, Phone, MapPin, Briefcase, Users, 
-  Edit, Plus, Eye, CheckCircle, Clock, TrendingUp
-} from 'lucide-react';
+import { Building2, Mail, Phone, MapPin, Briefcase, Users, CreditCard as Edit, Plus, Eye, CircleCheck as CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { AvatarImage } from '@/components/ui/avatar';
 
