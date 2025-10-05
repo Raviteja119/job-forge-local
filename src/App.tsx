@@ -15,6 +15,7 @@ import EmployerDashboard from "./pages/EmployerDashboard";
 import Profile from "./pages/Profile";
 import Jobs from "./pages/Jobs";
 import PostJob from "./pages/PostJob";
+import BrowseWorkers from "./pages/BrowseWorkers";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/common/Layout";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/post-job" element={<PostJob />} />
+              <Route path="/browse-workers" element={<BrowseWorkers />} />
               <Route path="/contact" element={<Contact />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

@@ -28,15 +28,29 @@ const WorkerDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const availableSkills = [
-    'Construction Work', 'Electrical Work', 'Plumbing', 'Carpentry', 
-    'Painting', 'Cleaning', 'Welding', 'Masonry', 'Tile Work', 
-    'Roofing', 'HVAC', 'Landscaping', 'Moving Services', 'Security'
+    'Electrical Installation', 'Circuit Design', 'Safety Protocols',
+    'Carpentry', 'Custom Cabinetry', 'Furniture Making', 'Joinery',
+    'Interior Painting', 'Exterior Painting', 'Color Mixing', 'Spray Painting',
+    'Plumbing Installation', 'Pipe Fitting', 'Drain Cleaning', 'Water Heater Service',
+    'MIG Welding', 'TIG Welding', 'Stick Welding', 'Metal Fabrication',
+    'Brick Laying', 'Stone Work', 'Mortar Application', 'Restoration Work',
+    'HVAC Installation', 'System Diagnostics', 'Refrigerant Handling',
+    'Landscape Design', 'Plant Selection', 'Irrigation Systems', 'Hardscaping',
+    'Roofing', 'TPO Installation', 'Leak Detection',
+    'Commercial Driving', 'Load Securement', 'DOT Compliance'
   ];
 
   const jobRoles = [
-    'Construction Worker', 'Electrician', 'Plumber', 'Carpenter',
-    'Painter', 'Cleaner', 'Welder', 'Mason', 'Tile Installer',
-    'Roofer', 'HVAC Technician', 'Landscaper', 'Mover', 'Security Guard'
+    'Electrician', 'Master Electrician', 'Electrical Helper',
+    'Carpenter', 'Master Carpenter', 'Finish Carpenter', 'Cabinet Maker',
+    'Painter', 'Commercial Painter', 'Residential Painter',
+    'Plumber', 'Master Plumber', 'Plumber Assistant',
+    'Welder', 'Certified Welder', 'Fabricator',
+    'Mason', 'Brick Mason', 'Stone Mason',
+    'HVAC Technician', 'HVAC Installer', 'HVAC Service Technician',
+    'Landscaper', 'Landscape Designer', 'Groundskeeper',
+    'Roofer', 'Commercial Roofer', 'Residential Roofer',
+    'CDL Driver', 'Truck Driver', 'Delivery Driver'
   ];
 
   const handleSkillToggle = (skill: string) => {

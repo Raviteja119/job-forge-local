@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Briefcase, User, LogIn, UserPlus, FileText, Phone, LogOut } from 'lucide-react';
+import { Briefcase, User, LogIn, UserPlus, FileText, Phone, LogOut, Users } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import navbarPattern from '@/assets/navbar-pattern.jpg';
 
@@ -63,16 +63,28 @@ const Navbar = () => {
             </Link>
             
             {userRole === 'employer' && (
-              <Link to="/post-job">
-                <Button 
-                  variant={isActive('/post-job') ? "default" : "ghost"} 
-                  size="sm"
-                  className="transition-smooth"
-                >
-                  <FileText className="w-4 h-4 mr-2" />
-                  Post a Job
-                </Button>
-              </Link>
+              <>
+                <Link to="/post-job">
+                  <Button
+                    variant={isActive('/post-job') ? "default" : "ghost"}
+                    size="sm"
+                    className="transition-smooth"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    Post a Job
+                  </Button>
+                </Link>
+                <Link to="/browse-workers">
+                  <Button
+                    variant={isActive('/browse-workers') ? "default" : "ghost"}
+                    size="sm"
+                    className="transition-smooth"
+                  >
+                    <Users className="w-4 h-4 mr-2" />
+                    Find Workers
+                  </Button>
+                </Link>
+              </>
             )}
             
             {user && (

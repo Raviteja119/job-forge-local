@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import JobApplicationDialog from '@/components/jobs/JobApplicationDialog';
+import JobDetailsDialog from '@/components/jobs/JobDetailsDialog';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +12,7 @@ import {
   Star, Calendar, DollarSign, Users 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { sampleJobs, Job } from '@/data/sampleJobs';
 
 const Jobs = () => {
   const { toast } = useToast();
@@ -17,130 +20,10 @@ const Jobs = () => {
   const [locationFilter, setLocationFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+  const [selectedJobForApplication, setSelectedJobForApplication] = useState<Job | null>(null);
+  const [selectedJobForDetails, setSelectedJobForDetails] = useState<Job | null>(null);
 
-  // Mock jobs data
-  const jobs = [
-    {
-      id: 1,
-      title: 'Electrician Helper',
-      company: 'PowerTech Solutions',
-      companyRating: 4.5,
-      location: 'Mumbai, Maharashtra',
-      type: 'Full-time',
-      category: 'Electrical',
-      wage: '₹500/day',
-      wageRange: '₹450-550/day',
-      duration: '3 months',
-      postedDate: '2024-01-15',
-      urgency: 'Urgent',
-      description: 'Looking for an experienced electrician helper to assist with residential and commercial electrical installations. Must have basic knowledge of electrical systems and safety protocols.',
-      requirements: ['Basic electrical knowledge', 'Safety certification preferred', '1+ years experience'],
-      skills: ['Electrical Work', 'Safety Protocols', 'Tool Handling'],
-      benefits: ['Medical Insurance', 'Performance Bonus', 'Training Provided'],
-      employerDetails: {
-        name: 'PowerTech Solutions',
-        type: 'Electrical Contractor',
-        established: '2018',
-        employees: '50-100',
-      },
-    },
-    {
-      id: 2,
-      title: 'Construction Worker',
-      company: 'BuildCorp Ltd',
-      companyRating: 4.2,
-      location: 'Delhi, NCR',
-      type: 'Contract',
-      category: 'Construction',
-      wage: '₹450/day',
-      wageRange: '₹400-500/day',
-      duration: '6 months',
-      postedDate: '2024-01-12',
-      urgency: null,
-      description: 'Seeking skilled construction workers for a major residential project. Candidates should have experience in concrete work, masonry, and general construction activities.',
-      requirements: ['2+ years construction experience', 'Physical fitness', 'Team player'],
-      skills: ['Construction', 'Masonry', 'Heavy Lifting', 'Concrete Work'],
-      benefits: ['Overtime Pay', 'Free Meals', 'Transportation'],
-      employerDetails: {
-        name: 'BuildCorp Ltd',
-        type: 'Construction Company',
-        established: '2015',
-        employees: '200-500',
-      },
-    },
-    {
-      id: 3,
-      title: 'Plumber Assistant',
-      company: 'AquaFix Services',
-      companyRating: 4.8,
-      location: 'Bangalore, Karnataka',
-      type: 'Full-time',
-      category: 'Plumbing',
-      wage: '₹400/day',
-      wageRange: '₹350-450/day',
-      duration: 'Permanent',
-      postedDate: '2024-01-10',
-      urgency: null,
-      description: 'Join our team as a plumber assistant. Help with pipe installations, repairs, and maintenance work. Great opportunity to learn and grow in the plumbing field.',
-      requirements: ['Willingness to learn', 'Basic tool knowledge', 'Good communication'],
-      skills: ['Plumbing', 'Pipe Fitting', 'Problem Solving'],
-      benefits: ['Skill Training', 'Career Growth', 'Health Insurance'],
-      employerDetails: {
-        name: 'AquaFix Services',
-        type: 'Home Services',
-        established: '2020',
-        employees: '20-50',
-      },
-    },
-    {
-      id: 4,
-      title: 'Painter - Interior & Exterior',
-      company: 'ColorCraft Painters',
-      companyRating: 4.3,
-      location: 'Pune, Maharashtra',
-      type: 'Contract',
-      category: 'Painting',
-      wage: '₹600/day',
-      wageRange: '₹550-650/day',
-      duration: '4 months',
-      postedDate: '2024-01-08',
-      urgency: 'Urgent',
-      description: 'Experienced painter needed for residential and commercial painting projects. Must be skilled in both interior and exterior painting techniques.',
-      requirements: ['3+ years painting experience', 'Own painting tools', 'Quality focused'],
-      skills: ['Interior Painting', 'Exterior Painting', 'Color Mixing', 'Surface Preparation'],
-      benefits: ['Material Allowance', 'Project Bonus', 'Flexible Hours'],
-      employerDetails: {
-        name: 'ColorCraft Painters',
-        type: 'Painting Contractor',
-        established: '2017',
-        employees: '10-20',
-      },
-    },
-    {
-      id: 5,
-      title: 'Cleaning Supervisor',
-      company: 'CleanPro Services',
-      companyRating: 4.1,
-      location: 'Chennai, Tamil Nadu',
-      type: 'Full-time',
-      category: 'Cleaning',
-      wage: '₹350/day',
-      wageRange: '₹300-400/day',
-      duration: 'Permanent',
-      postedDate: '2024-01-05',
-      urgency: null,
-      description: 'Looking for a cleaning supervisor to manage cleaning operations in commercial buildings. Responsible for team coordination and quality control.',
-      requirements: ['Leadership skills', 'Cleaning experience', 'Good communication'],
-      skills: ['Team Management', 'Quality Control', 'Cleaning Techniques'],
-      benefits: ['Leadership Role', 'Team Bonus', 'Professional Growth'],
-      employerDetails: {
-        name: 'CleanPro Services',
-        type: 'Facility Management',
-        established: '2019',
-        employees: '100-200',
-      },
-    },
-  ];
+  const jobs = sampleJobs;
 
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -152,11 +35,12 @@ const Jobs = () => {
     return matchesSearch && matchesLocation && matchesCategory;
   });
 
-  const handleApply = (jobId: number, jobTitle: string) => {
-    toast({
-      title: "Application Submitted!",
-      description: `Your application for ${jobTitle} has been submitted successfully.`,
-    });
+  const handleApply = (job: Job) => {
+    setSelectedJobForApplication(job);
+  };
+
+  const handleViewDetails = (job: Job) => {
+    setSelectedJobForDetails(job);
   };
 
   const renderStars = (rating: number) => {
@@ -218,11 +102,16 @@ const Jobs = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="Construction">Construction</SelectItem>
                     <SelectItem value="Electrical">Electrical</SelectItem>
-                    <SelectItem value="Plumbing">Plumbing</SelectItem>
+                    <SelectItem value="Carpentry">Carpentry</SelectItem>
                     <SelectItem value="Painting">Painting</SelectItem>
-                    <SelectItem value="Cleaning">Cleaning</SelectItem>
+                    <SelectItem value="Plumbing">Plumbing</SelectItem>
+                    <SelectItem value="Welding">Welding</SelectItem>
+                    <SelectItem value="Masonry">Masonry</SelectItem>
+                    <SelectItem value="HVAC">HVAC</SelectItem>
+                    <SelectItem value="Landscaping">Landscaping</SelectItem>
+                    <SelectItem value="Roofing">Roofing</SelectItem>
+                    <SelectItem value="Transportation">Transportation</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -346,15 +235,16 @@ const Jobs = () => {
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
+                        onClick={() => handleViewDetails(job)}
                         className="transition-smooth hover:border-primary hover:text-primary"
                       >
                         View Details
                       </Button>
-                      <Button 
-                        onClick={() => handleApply(job.id, job.title)}
+                      <Button
+                        onClick={() => handleApply(job)}
                         variant="hero"
                         size="sm"
                         className="transition-smooth"
@@ -381,6 +271,23 @@ const Jobs = () => {
           </Card>
         )}
       </div>
+
+      {selectedJobForApplication && (
+        <JobApplicationDialog
+          open={!!selectedJobForApplication}
+          onOpenChange={(open) => !open && setSelectedJobForApplication(null)}
+          job={selectedJobForApplication}
+        />
+      )}
+
+      {selectedJobForDetails && (
+        <JobDetailsDialog
+          open={!!selectedJobForDetails}
+          onOpenChange={(open) => !open && setSelectedJobForDetails(null)}
+          job={selectedJobForDetails}
+          onApply={() => setSelectedJobForApplication(selectedJobForDetails)}
+        />
+      )}
     </div>
   );
 };
