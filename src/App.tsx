@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/common/Layout";
 import { AuthProvider } from "./hooks/useAuth";
+import { LiveSupportChat } from "./components/LiveSupportChat";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
+          <LiveSupportChat />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

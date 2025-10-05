@@ -40,35 +40,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        // Load role from localStorage
-        if (session?.user) {
-          const savedRole = localStorage.getItem(`user_role_${session.user.id}`) as 'worker' | 'employer' | null;
-          setUserRoleState(savedRole);
-        } else {
-          setUserRoleState(null);
-        }
-        setLoading(false);
-      }
-    );
-
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    // Check for mock session on mount
+    const mockSessionData = localStorage.getItem('mockSession');
+    if (mockSessionData) {
+      const mockSession = JSON.parse(mockSessionData);
+      setSession(mockSession);
+      setUser(mockSession.user);
+      
       // Load role from localStorage
-      if (session?.user) {
-        const savedRole = localStorage.getItem(`user_role_${session.user.id}`) as 'worker' | 'employer' | null;
+      if (mockSession.user) {
+        const savedRole = localStorage.getItem(`user_role_${mockSession.user.id}`) as 'worker' | 'employer' | null;
         setUserRoleState(savedRole);
       }
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    }
+    setLoading(false);
   }, []);
 
   const setUserRole = (role: 'worker' | 'employer') => {
@@ -83,31 +68,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (email: string, password: string, username?: string, mobile?: string, role?: 'worker' | 'employer') => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Mock authentication - create user in localStorage
+      const userId = `user_${Date.now()}`;
+      const mockUser = {
+        id: userId,
         email,
-        password,
-        options: {
-          data: {
-            username,
-            mobile,
-          }
-        }
-      });
+        user_metadata: { username, mobile },
+        created_at: new Date().toISOString(),
+      };
 
-      if (error) {
-        toast({
-          title: "Registration Failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        return { error };
-      }
-
-      if (data.user && role) {
-        // Save role to localStorage
-        localStorage.setItem(`user_role_${data.user.id}`, role);
+      // Store user data
+      localStorage.setItem('mockUser', JSON.stringify(mockUser));
+      localStorage.setItem('mockSession', JSON.stringify({ access_token: 'mock_token', user: mockUser }));
+      
+      if (role) {
+        localStorage.setItem(`user_role_${userId}`, role);
         setUserRoleState(role);
       }
+
+      setUser(mockUser as any);
+      setSession({ access_token: 'mock_token', user: mockUser } as any);
 
       toast({
         title: "Registration Successful!",
@@ -127,97 +107,82 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
+      // Mock authentication - check if user exists in localStorage
+      const mockUserData = localStorage.getItem('mockUser');
+      
+      if (!mockUserData) {
+        const error = { message: "No account found. Please sign up first." };
         toast({
           title: "Sign In Error", 
           description: error.message,
           variant: "destructive",
         });
-      } else {
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
+        return { error };
       }
 
-      return { error };
+      const mockUser = JSON.parse(mockUserData);
+      const mockSession = { access_token: 'mock_token', user: mockUser };
+      
+      localStorage.setItem('mockSession', JSON.stringify(mockSession));
+      setUser(mockUser);
+      setSession(mockSession as any);
+
+      // Load role
+      const savedRole = localStorage.getItem(`user_role_${mockUser.id}`) as 'worker' | 'employer' | null;
+      setUserRoleState(savedRole);
+
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
+
+      return { error: null };
     } catch (error: any) {
-      return { error };
+      const err = { message: error.message || "An error occurred during sign in" };
+      toast({
+        title: "Sign In Error",
+        description: err.message,
+        variant: "destructive",
+      });
+      return { error: err };
     }
   };
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        toast({
-          title: "Sign Out Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Signed out",
-          description: "You have been successfully signed out.",
-        });
-      }
+      // Clear mock session
+      localStorage.removeItem('mockSession');
+      setUser(null);
+      setSession(null);
+      setUserRoleState(null);
 
-      return { error };
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out.",
+      });
+
+      return { error: null };
     } catch (error: any) {
       return { error };
     }
   };
 
   const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "Google Sign In Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-
-      return { error };
-    } catch (error: any) {
-      return { error };
-    }
+    // Mock Google sign in
+    toast({
+      title: "Coming Soon",
+      description: "Google sign-in will be available soon!",
+    });
+    return { error: null };
   };
 
   const signInWithGithub = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        }
-      });
-
-      if (error) {
-        toast({
-          title: "GitHub Sign In Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-
-      return { error };
-    } catch (error: any) {
-      return { error };
-    }
+    // Mock GitHub sign in
+    toast({
+      title: "Coming Soon",
+      description: "GitHub sign-in will be available soon!",
+    });
+    return { error: null };
   };
 
   const value = {
