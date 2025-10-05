@@ -5,13 +5,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { Building2, Mail, Phone, MapPin, Briefcase, Users, CreditCard as Edit, Plus, Eye, CircleCheck as CheckCircle, Clock, TrendingUp } from 'lucide-react';
+import { 
+  Building2, Mail, Phone, MapPin, Briefcase, Users, 
+  Edit, Plus, Eye, CheckCircle, Clock, TrendingUp
+} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { AvatarImage } from '@/components/ui/avatar';
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
-  const { user, userProfile } = useAuth();
+  const { user } = useAuth();
   
   // Mock employer data
   const employerData = {
@@ -106,7 +108,6 @@ const EmployerDashboard = () => {
           <CardContent className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               <Avatar className="w-24 h-24">
-                <AvatarImage src={userProfile?.profilePhotoUrl} />
                 <AvatarFallback className="text-2xl bg-accent-warm text-accent-warm-foreground">
                   <Building2 className="w-12 h-12" />
                 </AvatarFallback>

@@ -169,7 +169,7 @@ const PostJob = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="category">Category *</Label>
-                  <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
+                  <Select onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select job category" />
                     </SelectTrigger>
@@ -306,7 +306,7 @@ const PostJob = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="jobType">Job Type</Label>
-                  <Select value={formData.jobType} onValueChange={(value) => setFormData(prev => ({ ...prev, jobType: value }))}>
+                  <Select onValueChange={(value) => setFormData(prev => ({ ...prev, jobType: value }))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select job type" />
                     </SelectTrigger>
@@ -356,7 +356,7 @@ const PostJob = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="payType">Pay Structure</Label>
-                  <Select value={formData.payType} onValueChange={(value) => setFormData(prev => ({ ...prev, payType: value }))}>
+                  <Select onValueChange={(value) => setFormData(prev => ({ ...prev, payType: value }))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select pay type" />
                     </SelectTrigger>
@@ -438,7 +438,7 @@ const PostJob = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor="companyType">Company Type</Label>
-                  <Select value={formData.companyType} onValueChange={(value) => setFormData(prev => ({ ...prev, companyType: value }))}>
+                  <Select onValueChange={(value) => setFormData(prev => ({ ...prev, companyType: value }))}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select company type" />
                     </SelectTrigger>

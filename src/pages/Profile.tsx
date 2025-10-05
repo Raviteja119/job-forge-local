@@ -1,97 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { User, Phone, Mail, MapPin, Briefcase, Star, Clock, CircleCheck as CheckCircle, CreditCard as Edit, Award, TrendingUp, Camera, Save, X } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { useToast } from '@/hooks/use-toast';
+import { 
+  User, Phone, Mail, MapPin, Briefcase, Star, Clock, 
+  CheckCircle, Edit, Award, TrendingUp 
+} from 'lucide-react';
 
 const Profile = () => {
-  const { user, userProfile, updateUserProfile } = useAuth();
-  const { toast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editFormData, setEditFormData] = useState({
-    username: userProfile?.username || '',
-    mobile: userProfile?.mobile || '',
-    address: userProfile?.address || '',
-    experience: userProfile?.experience || '',
-    description: userProfile?.description || '',
-    preferredJobRoles: userProfile?.preferredJobRoles || []
-  });
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const availableJobRoles = [
-    'Construction Worker', 'Electrician', 'Plumber', 'Carpenter',
-    'Painter', 'Welder', 'Mason', 'HVAC Technician',
-    'Maintenance Worker', 'Security Guard', 'Driver', 'Helper'
-  ];
-
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please select an image under 5MB",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        updateUserProfile({ profilePhotoUrl: reader.result as string });
-        toast({
-          title: "Profile photo updated",
-          description: "Your profile photo has been updated successfully"
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRoleToggle = (role: string) => {
-    setEditFormData(prev => ({
-      ...prev,
-      preferredJobRoles: prev.preferredJobRoles.includes(role)
-        ? prev.preferredJobRoles.filter(r => r !== role)
-        : [...prev.preferredJobRoles, role]
-    }));
-  };
-
-  const handleSaveProfile = () => {
-    updateUserProfile(editFormData);
-    setIsEditing(false);
-    toast({
-      title: "Profile updated",
-      description: "Your profile has been updated successfully"
-    });
-  };
-
+  // Mock user data - in real app this would come from API/state management
   const userData = {
-    id: user?.id || 'U001',
-    username: userProfile?.username || user?.email?.split('@')[0] || 'User',
-    name: userProfile?.username || user?.email?.split('@')[0] || 'User',
-    mobile: userProfile?.mobile || '+91 XXXXXXXXXX',
-    email: user?.email || '',
-    avatar: userProfile?.profilePhotoUrl || '',
-    location: userProfile?.address || 'Location not set',
-    joinDate: user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Recently',
+    id: 'W001',
+    username: 'rajesh_kumar',
+    name: 'Rajesh Kumar',
+    mobile: '+91 9876543210',
+    email: 'rajesh.kumar@email.com',
+    avatar: '', // Can add actual avatar URL
+    location: 'Mumbai, Maharashtra',
+    joinDate: 'January 2024',
     rating: 4.7,
     totalJobs: 15,
     completedJobs: 12,
     skills: ['Construction Work', 'Electrical Work', 'Plumbing', 'Carpentry'],
-    preferredRoles: userProfile?.preferredJobRoles || [],
-    experience: userProfile?.experience || 'Not specified',
-    description: userProfile?.description || 'No description provided yet.',
+    preferredRoles: ['Construction Worker', 'Electrician', 'Maintenance Worker'],
+    experience: '3-5 years',
+    description: 'Experienced construction worker with expertise in electrical and plumbing work. Reliable, punctual, and committed to quality work.',
   };
 
   const appliedJobs = [
@@ -182,28 +117,12 @@ const Profile = () => {
         <Card className="card-shadow hover-glow border-0 animate-fade-in">
           <CardContent className="p-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <div className="relative">
-                <Avatar className="w-24 h-24">
-                  <AvatarImage src={userData.avatar} />
-                  <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
-                    {userData.name.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
-                <Button
-                  size="icon"
-                  className="absolute bottom-0 right-0 rounded-full w-8 h-8"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <Camera className="w-4 h-4" />
-                </Button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handlePhotoUpload}
-                />
-              </div>
+              <Avatar className="w-24 h-24">
+                <AvatarImage src={userData.avatar} />
+                <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
+                  {userData.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
               
               <div className="flex-1 space-y-4">
                 <div>
@@ -240,113 +159,10 @@ const Profile = () => {
               </div>
               
               <div className="flex flex-col gap-3">
-                <Dialog open={isEditing} onOpenChange={setIsEditing}>
-                  <DialogTrigger asChild>
-                    <Button className="flex items-center gap-2">
-                      <Edit className="w-4 h-4" />
-                      Edit Profile
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>Edit Profile</DialogTitle>
-                      <DialogDescription>
-                        Update your profile information and preferences
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-6 py-4">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="username">Username</Label>
-                          <Input
-                            id="username"
-                            value={editFormData.username}
-                            onChange={(e) => setEditFormData({ ...editFormData, username: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="mobile">Mobile Number</Label>
-                          <Input
-                            id="mobile"
-                            value={editFormData.mobile}
-                            onChange={(e) => setEditFormData({ ...editFormData, mobile: e.target.value })}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="address">Address</Label>
-                        <Input
-                          id="address"
-                          value={editFormData.address}
-                          onChange={(e) => setEditFormData({ ...editFormData, address: e.target.value })}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="experience">Experience Level</Label>
-                        <Select
-                          value={editFormData.experience}
-                          onValueChange={(value) => setEditFormData({ ...editFormData, experience: value })}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select experience level" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="0-1 years">0-1 years</SelectItem>
-                            <SelectItem value="1-3 years">1-3 years</SelectItem>
-                            <SelectItem value="3-5 years">3-5 years</SelectItem>
-                            <SelectItem value="5-10 years">5-10 years</SelectItem>
-                            <SelectItem value="10+ years">10+ years</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="description">About / Description</Label>
-                        <Textarea
-                          id="description"
-                          value={editFormData.description}
-                          onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
-                          rows={4}
-                        />
-                      </div>
-
-                      <div className="space-y-4">
-                        <Label className="text-base font-semibold">Preferred Job Roles</Label>
-                        <div className="grid grid-cols-2 gap-3">
-                          {availableJobRoles.map((role) => (
-                            <div
-                              key={role}
-                              onClick={() => handleRoleToggle(role)}
-                              className={`
-                                flex items-center space-x-2 p-3 rounded-lg border cursor-pointer transition-all
-                                ${editFormData.preferredJobRoles.includes(role)
-                                  ? 'border-primary bg-primary/10 text-primary'
-                                  : 'border-border hover:border-primary/50'
-                                }
-                              `}
-                            >
-                              <Checkbox checked={editFormData.preferredJobRoles.includes(role)} />
-                              <span className="text-sm font-medium">{role}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex gap-3 justify-end">
-                        <Button variant="outline" onClick={() => setIsEditing(false)}>
-                          <X className="w-4 h-4 mr-2" />
-                          Cancel
-                        </Button>
-                        <Button onClick={handleSaveProfile}>
-                          <Save className="w-4 h-4 mr-2" />
-                          Save Changes
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <Button className="flex items-center gap-2">
+                  <Edit className="w-4 h-4" />
+                  Edit Profile
+                </Button>
                 <div className="text-center p-4 bg-muted rounded-lg">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
