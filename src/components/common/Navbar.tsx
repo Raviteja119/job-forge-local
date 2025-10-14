@@ -116,8 +116,18 @@ const Navbar = () => {
           <div className="flex items-center space-x-2">
             {user ? (
               <>
-                <span className="text-sm text-foreground/80 hidden lg:block font-medium">
-                  Welcome, {userProfile?.username || user.email?.split('@')[0] || 'User'}
+                <Link to="/profile">
+                  <Button 
+                    variant={isActive('/profile') ? "default" : "ghost"} 
+                    size="sm"
+                    className="transition-smooth"
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Profile
+                  </Button>
+                </Link>
+                <span className="text-sm text-foreground/80 hidden lg:block font-medium px-3 py-1.5 bg-primary/10 rounded-md">
+                  Welcome, {userProfile?.username || user.user_metadata?.username || user.email?.split('@')[0] || 'User'}
                 </span>
                 <Button 
                   onClick={handleLogout}

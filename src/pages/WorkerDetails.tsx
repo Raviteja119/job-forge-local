@@ -102,8 +102,26 @@ const WorkerDetails = () => {
 
     setIsLoading(true);
 
-    // Simulate API call to save worker details
+    // Save worker details to localStorage
     setTimeout(() => {
+      const workerProfile = {
+        skills: formData.skills,
+        preferredJobRoles: formData.preferredRoles,
+        experience: formData.experience,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        description: formData.description,
+      };
+      
+      // Get current user from localStorage
+      const mockSession = localStorage.getItem('mockSession');
+      if (mockSession) {
+        const session = JSON.parse(mockSession);
+        localStorage.setItem(`user_profile_${session.user.id}`, JSON.stringify(workerProfile));
+      }
+      
       setIsLoading(false);
       toast({
         title: "Profile Completed!",

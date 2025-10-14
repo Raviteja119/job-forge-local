@@ -46,9 +46,9 @@ const Home = () => {
   ];
 
   const featuredJobs = [
-    { id: 1, title: 'Senior Electrician', company: 'BuildCorp', location: 'New York, NY', wage: '$45/hr', type: 'Full-time', skills: ['Electrical', 'Safety'] },
-    { id: 2, title: 'Plumbing Specialist', company: 'HomeServe', location: 'Los Angeles, CA', wage: '$38/hr', type: 'Contract', skills: ['Plumbing', 'Repair'] },
-    { id: 3, title: 'HVAC Technician', company: 'Climate Control', location: 'Chicago, IL', wage: '$42/hr', type: 'Full-time', skills: ['HVAC', 'Maintenance'] }
+    { id: 1, title: 'Senior Electrician', company: 'BuildCorp', location: 'Mumbai, MH', wage: '₹600/hr', type: 'Full-time', skills: ['Electrical', 'Safety'] },
+    { id: 2, title: 'Plumbing Specialist', company: 'HomeServe', location: 'Delhi, DL', wage: '₹500/hr', type: 'Contract', skills: ['Plumbing', 'Repair'] },
+    { id: 3, title: 'HVAC Technician', company: 'Climate Control', location: 'Bangalore, KA', wage: '₹550/hr', type: 'Full-time', skills: ['HVAC', 'Maintenance'] }
   ];
 
   const handleFeaturedJobClick = () => {

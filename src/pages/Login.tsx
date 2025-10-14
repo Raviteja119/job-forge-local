@@ -8,11 +8,13 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 import loginBg from '@/assets/login-bg.jpg';
 
 const Login = () => {
   const navigate = useNavigate();
   const { signIn, signInWithGoogle, signInWithGithub, user, userRole, loading } = useAuth();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -39,6 +41,18 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // Check if account exists
+    const mockUserData = localStorage.getItem(`mockUser_${formData.email}`);
+    if (!mockUserData) {
+      setIsLoading(false);
+      toast({
+        title: "Account Not Found",
+        description: "No account exists with this email. Please create a new account.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     const { error } = await signIn(formData.email, formData.password);
     

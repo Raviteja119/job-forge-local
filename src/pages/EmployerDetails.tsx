@@ -53,8 +53,32 @@ const EmployerDetails = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
+    // Save company profile to localStorage
     setTimeout(() => {
+      const companyProfile = {
+        companyName: formData.companyName,
+        companyType: formData.companyType,
+        industry: formData.industry,
+        companySize: formData.companySize,
+        established: formData.established,
+        website: formData.website,
+        description: formData.description,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        contactPerson: formData.contactPerson,
+        phone: formData.phone,
+        email: formData.email,
+      };
+      
+      // Get current user from localStorage
+      const mockSession = localStorage.getItem('mockSession');
+      if (mockSession) {
+        const session = JSON.parse(mockSession);
+        localStorage.setItem(`company_profile_${session.user.id}`, JSON.stringify(companyProfile));
+      }
+      
       setIsLoading(false);
       toast({
         title: "Company Profile Completed!",
