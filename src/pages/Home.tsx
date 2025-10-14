@@ -62,8 +62,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="relative py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-800 text-white" style={{ backgroundImage: `linear-gradient(rgba(37, 99, 235, 0.9), rgba(29, 78, 216, 0.9)), url(${heroImage})`, backgroundSize: 'cover' }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="relative py-20 px-4 text-white" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover' }}>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/60 to-blue-deep/60"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold mb-4">Find Your Next Opportunity</h1>
             <p className="text-xl text-blue-100 mb-6">Connect with top employers and skilled workers</p>
@@ -75,7 +76,7 @@ const Home = () => {
               Get Started
             </Button>
           </div>
-          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl p-6">
+          <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
                 <div className="relative">
@@ -88,7 +89,7 @@ const Home = () => {
                 <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} className="pl-10 h-12 text-slate-800" onKeyPress={(e) => e.key === 'Enter' && handleSearch()} />
               </div>
             </div>
-            <Button onClick={handleSearch} className="w-full mt-4 h-12 bg-blue-600 hover:bg-blue-700">Search Jobs</Button>
+            <Button onClick={handleSearch} className="w-full mt-4 h-12 bg-primary hover:bg-primary-hover text-primary-foreground">Search Jobs</Button>
           </div>
         </div>
       </section>

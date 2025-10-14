@@ -173,6 +173,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       const mockUser = JSON.parse(mockUserData);
+      
+      // Verify the stored email matches (basic validation)
+      if (mockUser.email !== email) {
+        const error = { message: "Invalid credentials. Please check your email and password." };
+        toast({
+          title: "Sign In Error",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
       const mockSession = { access_token: 'mock_token', user: mockUser };
       
       localStorage.setItem('mockSession', JSON.stringify(mockSession));
@@ -186,6 +198,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const savedProfile = localStorage.getItem(`user_profile_${mockUser.id}`);
       if (savedProfile) {
         setUserProfile(JSON.parse(savedProfile));
+      } else {
+        // Initialize default profile if none exists
+        const defaultProfile: UserProfile = {
+          username: mockUser.user_metadata?.username || mockUser.email?.split('@')[0] || '',
+          mobile: mockUser.user_metadata?.mobile || '',
+          profilePhotoUrl: '',
+          preferredJobRoles: [],
+          address: '',
+          experience: '',
+          description: ''
+        };
+        setUserProfile(defaultProfile);
+        localStorage.setItem(`user_profile_${mockUser.id}`, JSON.stringify(defaultProfile));
       }
 
       toast({
