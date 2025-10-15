@@ -10,11 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Briefcase, Award, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import workerDetailsBg from '@/assets/worker-details-bg.jpg';
 
 const WorkerDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { updateUserProfile } = useAuth();
   const [formData, setFormData] = useState({
     skills: [] as string[],
     preferredRoles: [] as string[],
@@ -102,32 +104,23 @@ const WorkerDetails = () => {
 
     setIsLoading(true);
 
-    // Save worker details to localStorage
+    // Save worker details using updateUserProfile
     setTimeout(() => {
-      const workerProfile = {
+      const fullAddress = `${formData.address}, ${formData.city}${formData.state ? ', ' + formData.state : ''}${formData.pincode ? ' - ' + formData.pincode : ''}`;
+      
+      updateUserProfile({
         skills: formData.skills,
         preferredJobRoles: formData.preferredRoles,
         experience: formData.experience,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        pincode: formData.pincode,
+        address: fullAddress,
         description: formData.description,
-      };
-      
-      // Get current user from localStorage
-      const mockSession = localStorage.getItem('mockSession');
-      if (mockSession) {
-        const session = JSON.parse(mockSession);
-        localStorage.setItem(`user_profile_${session.user.id}`, JSON.stringify(workerProfile));
-      }
+      });
       
       setIsLoading(false);
       toast({
         title: "Profile Completed!",
         description: "Your worker profile has been saved successfully",
       });
-      // Navigate to profile page
       navigate('/profile');
     }, 1500);
   };

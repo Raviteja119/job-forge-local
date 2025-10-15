@@ -8,11 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Building2, MapPin, Phone, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 import profileBg from '@/assets/profile-bg.jpg';
 
 const EmployerDetails = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { updateUserProfile } = useAuth();
   const [formData, setFormData] = useState({
     companyName: '',
     companyType: '',
@@ -53,31 +55,20 @@ const EmployerDetails = () => {
 
     setIsLoading(true);
 
-    // Save company profile to localStorage
+    // Save company profile using updateUserProfile
     setTimeout(() => {
-      const companyProfile = {
+      const fullAddress = `${formData.address}, ${formData.city}${formData.state ? ', ' + formData.state : ''}${formData.pincode ? ' - ' + formData.pincode : ''}`;
+      
+      updateUserProfile({
         companyName: formData.companyName,
         companyType: formData.companyType,
         industry: formData.industry,
         companySize: formData.companySize,
-        established: formData.established,
         website: formData.website,
-        description: formData.description,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        pincode: formData.pincode,
-        contactPerson: formData.contactPerson,
-        phone: formData.phone,
-        email: formData.email,
-      };
-      
-      // Get current user from localStorage
-      const mockSession = localStorage.getItem('mockSession');
-      if (mockSession) {
-        const session = JSON.parse(mockSession);
-        localStorage.setItem(`company_profile_${session.user.id}`, JSON.stringify(companyProfile));
-      }
+        companyDescription: formData.description,
+        address: fullAddress,
+        mobile: formData.phone,
+      });
       
       setIsLoading(false);
       toast({

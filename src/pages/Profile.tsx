@@ -88,7 +88,7 @@ const Profile = () => {
     rating: 4.7,
     totalJobs: 15,
     completedJobs: 12,
-    skills: ['Construction Work', 'Electrical Work', 'Plumbing', 'Carpentry'],
+    skills: userProfile?.skills || [],
     preferredRoles: userProfile?.preferredJobRoles || [],
     experience: userProfile?.experience || 'Not specified',
     description: userProfile?.description || 'No description provided yet.',
@@ -230,13 +230,18 @@ const Profile = () => {
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap gap-2">
-                  {userData.skills.map((skill) => (
-                    <Badge key={skill} variant="secondary">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
+                {userData.skills.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {userData.skills.map((skill) => (
+                      <Badge key={skill} variant="secondary">
+                        {skill}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                {userData.skills.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No skills added yet. Complete your worker details to add skills.</p>
+                )}
               </div>
               
               <div className="flex flex-col gap-3">

@@ -99,14 +99,25 @@ const PostJob = () => {
 
     setIsLoading(true);
 
-    // Simulate API call to post job
+    // Save job posting to localStorage for demo purposes
     setTimeout(() => {
+      const jobPosting = {
+        ...formData,
+        id: `job_${Date.now()}`,
+        postedDate: new Date().toISOString(),
+        status: 'active'
+      };
+      
+      // Get existing jobs or create new array
+      const existingJobs = JSON.parse(localStorage.getItem('postedJobs') || '[]');
+      existingJobs.push(jobPosting);
+      localStorage.setItem('postedJobs', JSON.stringify(existingJobs));
+      
       setIsLoading(false);
       toast({
         title: "Job Posted Successfully!",
         description: `Your job posting for ${formData.jobTitle} is now live and visible to job seekers.`,
       });
-      // Navigate to jobs page to see the posted job
       navigate('/jobs');
     }, 2000);
   };

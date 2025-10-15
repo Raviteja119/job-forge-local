@@ -3,7 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-interface UserProfile {
+export interface UserProfile {
   username: string;
   mobile: string;
   profilePhotoUrl: string;
@@ -11,6 +11,13 @@ interface UserProfile {
   address: string;
   experience: string;
   description: string;
+  skills?: string[];
+  companyName?: string;
+  companyType?: string;
+  industry?: string;
+  companySize?: string;
+  website?: string;
+  companyDescription?: string;
 }
 
 interface AuthContextType {
