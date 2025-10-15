@@ -81,6 +81,10 @@ const WorkerDetails = () => {
     }));
   };
 
+  const handleExperienceChange = (value: string) => {
+    setFormData(prev => ({ ...prev, experience: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -238,7 +242,7 @@ const WorkerDetails = () => {
               {/* Work Experience */}
               <div className="space-y-2">
                 <Label htmlFor="experience">Work Experience *</Label>
-                <Select onValueChange={(value) => setFormData(prev => ({ ...prev, experience: value }))}>
+                <Select onValueChange={handleExperienceChange}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select your experience level" />
                   </SelectTrigger>

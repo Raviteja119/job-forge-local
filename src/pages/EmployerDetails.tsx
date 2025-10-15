@@ -41,6 +41,10 @@ const EmployerDetails = () => {
     }));
   };
 
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -133,7 +137,7 @@ const EmployerDetails = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="companyType">Company Type *</Label>
-                    <Select value={formData.companyType} onValueChange={(value) => setFormData(prev => ({ ...prev, companyType: value }))}>
+                    <Select value={formData.companyType} onValueChange={(value) => handleSelectChange('companyType', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
@@ -164,7 +168,7 @@ const EmployerDetails = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="companySize">Company Size</Label>
-                    <Select value={formData.companySize} onValueChange={(value) => setFormData(prev => ({ ...prev, companySize: value }))}>
+                    <Select value={formData.companySize} onValueChange={(value) => handleSelectChange('companySize', value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select size" />
                       </SelectTrigger>
