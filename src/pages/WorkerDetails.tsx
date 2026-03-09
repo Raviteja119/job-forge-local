@@ -12,6 +12,7 @@ import { MapPin, Briefcase, Award, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import workerDetailsBg from '@/assets/worker-details-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const WorkerDetails = () => {
   const navigate = useNavigate();
