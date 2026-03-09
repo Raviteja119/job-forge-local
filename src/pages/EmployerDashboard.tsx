@@ -3,25 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Building2, Mail, Phone, MapPin, Briefcase, Users, CreditCard as Edit, Plus, Eye, CircleCheck as CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { AvatarImage } from '@/components/ui/avatar';
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
   const { user, userProfile } = useAuth();
   
-  // Mock employer data
   const employerData = {
-    companyName: 'BuildCorp Ltd',
-    companyType: 'Construction Company',
+    companyName: userProfile?.companyName || 'Company Name',
+    companyType: userProfile?.companyType || 'Not specified',
     email: user?.email || 'employer@email.com',
-    phone: '+91 9876543210',
-    location: 'Mumbai, Maharashtra',
+    phone: userProfile?.mobile || '+91 XXXXXXXXXX',
+    location: userProfile?.address || 'Location not set',
     established: '2015',
-    employees: '200-500',
+    employees: userProfile?.companySize || '10-50',
     totalJobsPosted: 18,
     activeJobs: 7,
     totalApplications: 142,
@@ -29,85 +27,38 @@ const EmployerDashboard = () => {
   };
 
   const activeJobs = [
-    {
-      id: 1,
-      title: 'Electrician Helper',
-      category: 'Electrical',
-      postedDate: '2024-01-15',
-      applications: 12,
-      status: 'Active',
-      wage: '₹500/day',
-    },
-    {
-      id: 2,
-      title: 'Construction Worker',
-      category: 'Construction',
-      postedDate: '2024-01-12',
-      applications: 25,
-      status: 'Active',
-      wage: '₹450/day',
-    },
-    {
-      id: 3,
-      title: 'Plumber Assistant',
-      category: 'Plumbing',
-      postedDate: '2024-01-10',
-      applications: 8,
-      status: 'Active',
-      wage: '₹400/day',
-    },
+    { id: 1, title: 'Electrician Helper', category: 'Electrical', postedDate: '2024-01-15', applications: 12, status: 'Active', wage: '₹500/day' },
+    { id: 2, title: 'Construction Worker', category: 'Construction', postedDate: '2024-01-12', applications: 25, status: 'Active', wage: '₹450/day' },
+    { id: 3, title: 'Plumber Assistant', category: 'Plumbing', postedDate: '2024-01-10', applications: 8, status: 'Active', wage: '₹400/day' },
   ];
 
   const recentApplications = [
-    {
-      id: 1,
-      workerName: 'Rajesh Kumar',
-      jobTitle: 'Electrician Helper',
-      appliedDate: '2024-01-16',
-      rating: 4.7,
-      experience: '3-5 years',
-      status: 'New',
-    },
-    {
-      id: 2,
-      workerName: 'Amit Singh',
-      jobTitle: 'Construction Worker',
-      appliedDate: '2024-01-15',
-      rating: 4.5,
-      experience: '5-10 years',
-      status: 'Reviewed',
-    },
-    {
-      id: 3,
-      workerName: 'Suresh Patel',
-      jobTitle: 'Plumber Assistant',
-      appliedDate: '2024-01-14',
-      rating: 4.2,
-      experience: '1-3 years',
-      status: 'Shortlisted',
-    },
+    { id: 1, workerName: 'Rajesh Kumar', jobTitle: 'Electrician Helper', appliedDate: '2024-01-16', rating: 4.7, experience: '3-5 years', status: 'New' },
+    { id: 2, workerName: 'Amit Singh', jobTitle: 'Construction Worker', appliedDate: '2024-01-15', rating: 4.5, experience: '5-10 years', status: 'Reviewed' },
+    { id: 3, workerName: 'Suresh Patel', jobTitle: 'Plumber Assistant', appliedDate: '2024-01-14', rating: 4.2, experience: '1-3 years', status: 'Shortlisted' },
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
-      case 'New': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
-      case 'Reviewed': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'Shortlisted': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+      case 'Active': return 'bg-green-100 text-green-800';
+      case 'New': return 'bg-blue-100 text-blue-800';
+      case 'Reviewed': return 'bg-yellow-100 text-yellow-800';
+      case 'Shortlisted': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-muted/30">
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-muted/30 via-background to-accent-warm/5">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Company Header */}
-        <Card className="card-shadow hover-glow border-0 animate-fade-in">
-          <CardContent className="p-8">
+        <Card className="card-shadow border-0 animate-fade-in overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-accent-warm/5 via-transparent to-accent-warm/10"></div>
+          <CardContent className="p-8 relative">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <Avatar className="w-24 h-24">
+              <Avatar className="w-24 h-24 ring-4 ring-accent-warm/20">
                 <AvatarImage src={userProfile?.profilePhotoUrl} />
-                <AvatarFallback className="text-2xl bg-accent-warm text-accent-warm-foreground">
+                <AvatarFallback className="text-2xl bg-gradient-to-br from-accent-warm to-accent-warm/80 text-accent-warm-foreground">
                   <Building2 className="w-12 h-12" />
                 </AvatarFallback>
               </Avatar>
@@ -116,46 +67,25 @@ const EmployerDashboard = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <h1 className="text-3xl font-bold text-foreground">{employerData.companyName}</h1>
-                    <Badge variant="secondary">Employer</Badge>
+                    <Badge variant="secondary" className="bg-accent-warm/10 text-accent-warm">Employer</Badge>
                   </div>
                   <p className="text-muted-foreground">{employerData.companyType}</p>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Mail className="w-4 h-4" />
-                    <span className="text-sm">{employerData.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Phone className="w-4 h-4" />
-                    <span className="text-sm">{employerData.phone}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-sm">{employerData.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Building2 className="w-4 h-4" />
-                    <span className="text-sm">Est. {employerData.established}</span>
-                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground"><Mail className="w-4 h-4" /><span className="text-sm">{employerData.email}</span></div>
+                  <div className="flex items-center gap-2 text-muted-foreground"><Phone className="w-4 h-4" /><span className="text-sm">{employerData.phone}</span></div>
+                  <div className="flex items-center gap-2 text-muted-foreground"><MapPin className="w-4 h-4" /><span className="text-sm">{employerData.location}</span></div>
+                  <div className="flex items-center gap-2 text-muted-foreground"><Building2 className="w-4 h-4" /><span className="text-sm">{employerData.employees} employees</span></div>
                 </div>
               </div>
               
               <div className="flex flex-col gap-3">
-                <Button 
-                  className="flex items-center gap-2"
-                  onClick={() => navigate('/employer-details')}
-                >
-                  <Edit className="w-4 h-4" />
-                  Edit Company
+                <Button className="flex items-center gap-2" onClick={() => navigate('/employer-details')}>
+                  <Edit className="w-4 h-4" />Edit Company
                 </Button>
-                <Button 
-                  variant="accent"
-                  onClick={() => navigate('/post-job')}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Post New Job
+                <Button variant="accent" onClick={() => navigate('/post-job')} className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />Post New Job
                 </Button>
               </div>
             </div>
@@ -164,68 +94,46 @@ const EmployerDashboard = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="card-shadow">
+          <Card className="card-shadow border-0 hover-lift bg-gradient-to-br from-primary/5 to-primary/10">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Active Jobs</p>
-                  <p className="text-3xl font-bold text-primary">{employerData.activeJobs}</p>
-                </div>
-                <Briefcase className="w-8 h-8 text-primary" />
+                <div><p className="text-sm text-muted-foreground">Active Jobs</p><p className="text-3xl font-bold text-primary">{employerData.activeJobs}</p></div>
+                <div className="p-3 bg-primary/10 rounded-xl"><Briefcase className="w-8 h-8 text-primary" /></div>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="card-shadow">
+          <Card className="card-shadow border-0 hover-lift bg-gradient-to-br from-success/5 to-success/10">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Jobs</p>
-                  <p className="text-3xl font-bold text-success">{employerData.totalJobsPosted}</p>
-                </div>
-                <TrendingUp className="w-8 h-8 text-success" />
+                <div><p className="text-sm text-muted-foreground">Total Jobs</p><p className="text-3xl font-bold text-success">{employerData.totalJobsPosted}</p></div>
+                <div className="p-3 bg-success/10 rounded-xl"><TrendingUp className="w-8 h-8 text-success" /></div>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="card-shadow">
+          <Card className="card-shadow border-0 hover-lift bg-gradient-to-br from-accent-warm/5 to-accent-warm/10">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Applications</p>
-                  <p className="text-3xl font-bold text-accent-warm">{employerData.totalApplications}</p>
-                </div>
-                <Clock className="w-8 h-8 text-accent-warm" />
+                <div><p className="text-sm text-muted-foreground">Applications</p><p className="text-3xl font-bold text-accent-warm">{employerData.totalApplications}</p></div>
+                <div className="p-3 bg-accent-warm/10 rounded-xl"><Clock className="w-8 h-8 text-accent-warm" /></div>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="card-shadow">
+          <Card className="card-shadow border-0 hover-lift bg-gradient-to-br from-success/5 to-success/10">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Hired</p>
-                  <p className="text-3xl font-bold text-success">{employerData.hiredWorkers}</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-success" />
+                <div><p className="text-sm text-muted-foreground">Hired</p><p className="text-3xl font-bold text-success">{employerData.hiredWorkers}</p></div>
+                <div className="p-3 bg-success/10 rounded-xl"><CheckCircle className="w-8 h-8 text-success" /></div>
               </div>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Active Jobs */}
-          <Card className="card-shadow">
+          <Card className="card-shadow border-0">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Active Job Postings</CardTitle>
-                  <CardDescription>Your current job listings</CardDescription>
-                </div>
-                <Button size="sm" variant="outline" onClick={() => navigate('/post-job')}>
-                  <Plus className="w-4 h-4 mr-1" />
-                  New
-                </Button>
+                <div><CardTitle>Active Job Postings</CardTitle><CardDescription>Your current job listings</CardDescription></div>
+                <Button size="sm" variant="outline" onClick={() => navigate('/post-job')}><Plus className="w-4 h-4 mr-1" />New</Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -247,13 +155,8 @@ const EmployerDashboard = () => {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Badge className={getStatusColor(job.status)}>
-                        {job.status}
-                      </Badge>
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-3 h-3 mr-1" />
-                        View
-                      </Button>
+                      <Badge className={getStatusColor(job.status)}>{job.status}</Badge>
+                      <Button size="sm" variant="outline"><Eye className="w-3 h-3 mr-1" />View</Button>
                     </div>
                   </div>
                   {index < activeJobs.length - 1 && <Separator className="mt-4" />}
@@ -262,12 +165,8 @@ const EmployerDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Recent Applications */}
-          <Card className="card-shadow">
-            <CardHeader>
-              <CardTitle>Recent Applications</CardTitle>
-              <CardDescription>Latest worker applications</CardDescription>
-            </CardHeader>
+          <Card className="card-shadow border-0">
+            <CardHeader><CardTitle>Recent Applications</CardTitle><CardDescription>Latest worker applications</CardDescription></CardHeader>
             <CardContent className="space-y-4">
               {recentApplications.map((app, index) => (
                 <div key={app.id}>
@@ -275,25 +174,16 @@ const EmployerDashboard = () => {
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
                         <h4 className="font-semibold">{app.workerName}</h4>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs">⭐</span>
-                          <span className="text-xs font-medium">{app.rating}</span>
-                        </div>
+                        <div className="flex items-center gap-1"><span className="text-xs">⭐</span><span className="text-xs font-medium">{app.rating}</span></div>
                       </div>
                       <p className="text-sm text-muted-foreground">{app.jobTitle}</p>
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span>Applied {app.appliedDate}</span>
-                        <span>{app.experience}</span>
+                        <span>Applied {app.appliedDate}</span><span>{app.experience}</span>
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 items-end">
-                      <Badge className={getStatusColor(app.status)}>
-                        {app.status}
-                      </Badge>
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-3 h-3 mr-1" />
-                        Review
-                      </Button>
+                      <Badge className={getStatusColor(app.status)}>{app.status}</Badge>
+                      <Button size="sm" variant="outline"><Eye className="w-3 h-3 mr-1" />Review</Button>
                     </div>
                   </div>
                   {index < recentApplications.length - 1 && <Separator className="mt-4" />}
@@ -303,35 +193,18 @@ const EmployerDashboard = () => {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="card-shadow">
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
+        <Card className="card-shadow border-0">
+          <CardHeader><CardTitle>Quick Actions</CardTitle></CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
-              <Button 
-                variant="outline" 
-                className="h-auto py-6 flex flex-col items-center gap-2"
-                onClick={() => navigate('/post-job')}
-              >
-                <Plus className="w-6 h-6" />
-                <span>Post New Job</span>
+              <Button variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 hover-lift" onClick={() => navigate('/post-job')}>
+                <Plus className="w-6 h-6" /><span>Post New Job</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto py-6 flex flex-col items-center gap-2"
-              >
-                <Users className="w-6 h-6" />
-                <span>View All Applications</span>
+              <Button variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 hover-lift" onClick={() => navigate('/browse-workers')}>
+                <Users className="w-6 h-6" /><span>Browse Workers</span>
               </Button>
-              <Button 
-                variant="outline" 
-                className="h-auto py-6 flex flex-col items-center gap-2"
-                onClick={() => navigate('/employer-details')}
-              >
-                <Edit className="w-6 h-6" />
-                <span>Update Company Profile</span>
+              <Button variant="outline" className="h-auto py-6 flex flex-col items-center gap-2 hover-lift" onClick={() => navigate('/employer-details')}>
+                <Edit className="w-6 h-6" /><span>Update Company Profile</span>
               </Button>
             </div>
           </CardContent>
