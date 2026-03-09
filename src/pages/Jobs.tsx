@@ -102,6 +102,7 @@ const Jobs = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-muted/30 to-background">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-4 animate-fade-in">
