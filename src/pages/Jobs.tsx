@@ -12,10 +12,12 @@ import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import { 
   Search, MapPin, Clock, Briefcase, Building, 
-  Star, Calendar, Filter, ChevronDown, ChevronUp, X
+  Star, Calendar, Filter, ChevronDown, ChevronUp, X, Bookmark
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { sampleJobs, Job } from '@/data/sampleJobs';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import PageTransition from '@/components/common/PageTransition';
 
 const Jobs = () => {
   const { toast } = useToast();
@@ -62,6 +64,7 @@ const Jobs = () => {
     return result;
   }, [jobs, searchQuery, locationFilter, categoryFilter, jobTypeFilters, urgentOnly, salaryRange, sortBy]);
 
+  const { toggleBookmark, isBookmarked } = useBookmarks();
   const handleApply = (job: Job) => setSelectedJobForApplication(job);
   const handleViewDetails = (job: Job) => setSelectedJobForDetails(job);
 
@@ -99,6 +102,7 @@ const Jobs = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-muted/30 to-background">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-4 animate-fade-in">
@@ -256,12 +260,20 @@ const Jobs = () => {
 
                   <Separator />
 
-                  <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                     <div className="space-y-1">
                       <p className="text-sm font-medium">Employer: {job.employerDetails.name}</p>
                       <p className="text-xs text-muted-foreground">{job.employerDetails.type} • Est. {job.employerDetails.established} • {job.employerDetails.employees} employees</p>
                     </div>
                     <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleBookmark(String(job.id))}
+                        className={isBookmarked(String(job.id)) ? 'text-primary' : 'text-muted-foreground'}
+                      >
+                        <Bookmark className={`w-5 h-5 ${isBookmarked(String(job.id)) ? 'fill-current' : ''}`} />
+                      </Button>
                       <Button variant="outline" size="sm" onClick={() => handleViewDetails(job)}>View Details</Button>
                       <Button onClick={() => handleApply(job)} variant="hero" size="sm">Apply Now</Button>
                     </div>
@@ -291,6 +303,7 @@ const Jobs = () => {
         <JobDetailsDialog open={!!selectedJobForDetails} onOpenChange={(open) => !open && setSelectedJobForDetails(null)} job={selectedJobForDetails} onApply={() => setSelectedJobForApplication(selectedJobForDetails)} />
       )}
     </div>
+    </PageTransition>
   );
 };
 

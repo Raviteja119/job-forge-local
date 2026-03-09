@@ -17,6 +17,8 @@ import PostJob from "./pages/PostJob";
 import BrowseWorkers from "./pages/BrowseWorkers";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Layout from "./components/common/Layout";
 import { AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./hooks/useTheme";
@@ -47,6 +49,8 @@ const App = () => (
                 <Route path="/post-job" element={<PostJob />} />
                 <Route path="/browse-workers" element={<BrowseWorkers />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
