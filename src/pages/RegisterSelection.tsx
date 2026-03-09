@@ -14,7 +14,8 @@ const RegisterSelection = () => {
   };
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen flex items-center justify-center py-12 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${registerBg})`,
