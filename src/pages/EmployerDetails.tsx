@@ -91,7 +91,8 @@ const EmployerDetails = () => {
     formData.city;
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen py-12 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${profileBg})`,
