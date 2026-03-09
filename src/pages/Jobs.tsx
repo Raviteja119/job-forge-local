@@ -269,10 +269,10 @@ const Jobs = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => toggleBookmark(job.id)}
-                        className={isBookmarked(job.id) ? 'text-primary' : 'text-muted-foreground'}
+                        onClick={() => toggleBookmark(String(job.id))}
+                        className={isBookmarked(String(job.id)) ? 'text-primary' : 'text-muted-foreground'}
                       >
-                        <Bookmark className={`w-5 h-5 ${isBookmarked(job.id) ? 'fill-current' : ''}`} />
+                        <Bookmark className={`w-5 h-5 ${isBookmarked(String(job.id)) ? 'fill-current' : ''}`} />
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => handleViewDetails(job)}>View Details</Button>
                       <Button onClick={() => handleApply(job)} variant="hero" size="sm">Apply Now</Button>
