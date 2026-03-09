@@ -17,7 +17,7 @@ import { sampleJobs } from '@/data/sampleJobs';
 const WorkerDashboard = () => {
   const navigate = useNavigate();
   const { user, userProfile } = useAuth();
-  const { bookmarks, toggleBookmark, isBookmarked } = useAuth ? useBookmarks() : { bookmarks: [], toggleBookmark: () => {}, isBookmarked: () => false };
+  const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   
   const userData = {
     id: user?.id?.slice(0, 6) || 'W001',
