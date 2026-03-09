@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, MapPin, Zap, Hammer, Paintbrush, Wrench, Droplet, Scissors, Truck, HardHat, Drill, Ruler, ArrowRight, Users, Briefcase, Star, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import heroImage from '@/assets/hero-image.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Home = () => {
   const navigate = useNavigate();
