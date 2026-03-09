@@ -64,6 +64,7 @@ const Jobs = () => {
     return result;
   }, [jobs, searchQuery, locationFilter, categoryFilter, jobTypeFilters, urgentOnly, salaryRange, sortBy]);
 
+  const { toggleBookmark, isBookmarked } = useBookmarks();
   const handleApply = (job: Job) => setSelectedJobForApplication(job);
   const handleViewDetails = (job: Job) => setSelectedJobForDetails(job);
 
