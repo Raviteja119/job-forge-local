@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { User, Phone, Mail, MapPin, Briefcase, Star, Clock, CircleCheck as CheckCircle, CreditCard as Edit, Award, TrendingUp, Camera, Save, X } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import PageTransition from '@/components/common/PageTransition';
 
 const Profile = () => {
   const { user, userProfile, updateUserProfile } = useAuth();
