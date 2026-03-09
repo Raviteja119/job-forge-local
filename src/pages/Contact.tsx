@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import contactBg from '@/assets/contact-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Contact = () => {
   const { toast } = useToast();
