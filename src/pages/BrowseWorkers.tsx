@@ -60,6 +60,7 @@ const BrowseWorkers = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-muted/30">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-4">
