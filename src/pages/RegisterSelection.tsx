@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, Building2, CheckCircle } from 'lucide-react';
 import registerBg from '@/assets/register-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const RegisterSelection = () => {
   const navigate = useNavigate();
