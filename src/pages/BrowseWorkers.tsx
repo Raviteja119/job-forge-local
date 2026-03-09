@@ -27,9 +27,10 @@ const BrowseWorkers = () => {
   const [selectedWorker, setSelectedWorker] = useState<WorkerProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useState(() => {
-    setTimeout(() => setIsLoading(false), 800);
-  });
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredWorkers = sampleWorkers.filter(worker => {
     const matchesSearch = worker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
