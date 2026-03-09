@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { validatePassword, getPasswordStrength } from '@/utils/passwordValidation';
 import { useToast } from '@/hooks/use-toast';
 import registerBg from '@/assets/register-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Register = () => {
   const navigate = useNavigate();
