@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, Building2, CheckCircle } from 'lucide-react';
 import registerBg from '@/assets/register-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const RegisterSelection = () => {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ const RegisterSelection = () => {
   };
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen flex items-center justify-center py-12 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${registerBg})`,
@@ -147,6 +149,7 @@ const RegisterSelection = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

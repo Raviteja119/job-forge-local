@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import contactBg from '@/assets/contact-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -147,7 +148,8 @@ const Contact = () => {
   };
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen py-8 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${contactBg})`,
@@ -427,6 +429,7 @@ const Contact = () => {
         </section>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

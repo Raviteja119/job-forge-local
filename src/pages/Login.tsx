@@ -10,6 +10,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import loginBg from '@/assets/login-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ const Login = () => {
   const isFormValid = formData.email && formData.password;
 
   return (
+    <PageTransition>
     <div className="min-h-screen form-container flex items-center justify-center py-12 px-4 animate-fade-in">
       <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center animate-slide-up">
@@ -241,6 +243,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

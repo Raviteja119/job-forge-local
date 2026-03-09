@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Building2, Mail, Phone, MapPin, Briefcase, Users, CreditCard as Edit, Plus, Eye, CircleCheck as CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import PageTransition from '@/components/common/PageTransition';
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const EmployerDashboard = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-muted/30 via-background to-accent-warm/5">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Company Header */}
@@ -211,6 +213,7 @@ const EmployerDashboard = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

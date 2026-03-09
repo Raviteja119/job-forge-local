@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import postJobBg from '@/assets/post-job-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -137,7 +138,8 @@ const PostJob = () => {
     formData.contactEmail;
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen py-8 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${postJobBg})`,
@@ -543,6 +545,7 @@ const PostJob = () => {
         </form>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

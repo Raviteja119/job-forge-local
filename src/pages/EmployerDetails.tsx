@@ -10,6 +10,7 @@ import { Building2, MapPin, Phone, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import profileBg from '@/assets/profile-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const EmployerDetails = () => {
   const navigate = useNavigate();
@@ -90,7 +91,8 @@ const EmployerDetails = () => {
     formData.city;
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen py-12 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${profileBg})`,
@@ -341,6 +343,7 @@ const EmployerDetails = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

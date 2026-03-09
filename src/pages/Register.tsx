@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { validatePassword, getPasswordStrength } from '@/utils/passwordValidation';
 import { useToast } from '@/hooks/use-toast';
 import registerBg from '@/assets/register-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -119,6 +120,7 @@ const Register = () => {
     formData.agreeToTerms;
 
   return (
+    <PageTransition>
     <div className="min-h-screen form-container flex items-center justify-center py-12 px-4 animate-fade-in">
       <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center animate-slide-up">
@@ -345,6 +347,7 @@ const Register = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

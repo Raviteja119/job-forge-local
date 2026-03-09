@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, MapPin, Zap, Hammer, Paintbrush, Wrench, Droplet, Scissors, Truck, HardHat, Drill, Ruler, ArrowRight, Users, Briefcase, Star, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import heroImage from '@/assets/hero-image.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const Home = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative py-24 px-4 text-white overflow-hidden" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -224,6 +226,7 @@ const Home = () => {
         </div>
       </section>
     </div>
+    </PageTransition>
   );
 };
 

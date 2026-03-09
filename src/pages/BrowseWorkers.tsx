@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +16,8 @@ import { Separator } from '@/components/ui/separator';
 import { Search, MapPin, Star, Award, Clock, Briefcase, CircleCheck as CheckCircle2, MessageSquare, Phone, Mail, TrendingUp } from 'lucide-react';
 import { sampleWorkers, WorkerProfile } from '@/data/sampleWorkers';
 import { useToast } from '@/hooks/use-toast';
+import PageTransition from '@/components/common/PageTransition';
+import { WorkerCardSkeleton } from '@/components/common/LoadingSkeleton';
 
 const BrowseWorkers = () => {
   const { toast } = useToast();
@@ -23,6 +25,12 @@ const BrowseWorkers = () => {
   const [locationFilter, setLocationFilter] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [selectedWorker, setSelectedWorker] = useState<WorkerProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredWorkers = sampleWorkers.filter(worker => {
     const matchesSearch = worker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -53,6 +61,7 @@ const BrowseWorkers = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-muted/30">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="text-center space-y-4">
@@ -111,6 +120,11 @@ const BrowseWorkers = () => {
           </CardContent>
         </Card>
 
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map(i => <WorkerCardSkeleton key={i} />)}
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredWorkers.map((worker) => (
             <Card key={worker.id} className="card-shadow hover-lift animate-fade-in border-0 hover-glow">
@@ -202,8 +216,9 @@ const BrowseWorkers = () => {
             </Card>
           ))}
         </div>
+        )}
 
-        {filteredWorkers.length === 0 && (
+        {!isLoading && filteredWorkers.length === 0 && (
           <Card className="card-shadow animate-fade-in border-0">
             <CardContent className="p-12 text-center">
               <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
@@ -362,6 +377,7 @@ const BrowseWorkers = () => {
         </Dialog>
       )}
     </div>
+    </PageTransition>
   );
 };
 

@@ -10,10 +10,14 @@ import {
   CheckCircle, Edit, Award, TrendingUp, Search, Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import PageTransition from '@/components/common/PageTransition';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { sampleJobs } from '@/data/sampleJobs';
 
 const WorkerDashboard = () => {
   const navigate = useNavigate();
   const { user, userProfile } = useAuth();
+  const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   
   const userData = {
     id: user?.id?.slice(0, 6) || 'W001',
@@ -60,7 +64,10 @@ const WorkerDashboard = () => {
     ));
   };
 
+  const savedJobs = sampleJobs.filter(job => bookmarks.includes(String(job.id)));
+
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-muted/30 via-background to-primary/5">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Header */}
@@ -228,6 +235,50 @@ const WorkerDashboard = () => {
           </Card>
         </div>
 
+        {/* Saved Jobs */}
+        <Card className="card-shadow border-0">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Star className="w-5 h-5 text-primary" />
+              Saved Jobs
+            </CardTitle>
+            <CardDescription>Jobs you've bookmarked for later</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {savedJobs.length > 0 ? (
+              <div className="space-y-4">
+                {savedJobs.slice(0, 4).map((job, index) => (
+                  <div key={job.id}>
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <h4 className="font-semibold">{job.title}</h4>
+                        <p className="text-sm text-muted-foreground">{job.company}</p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{job.location}</span>
+                          <span className="font-semibold text-success">{job.wage}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={() => navigate('/jobs')}>View</Button>
+                        <Button size="sm" variant="ghost" onClick={() => toggleBookmark(String(job.id))}>
+                          <Star className="w-4 h-4 fill-current text-primary" />
+                        </Button>
+                      </div>
+                    </div>
+                    {index < Math.min(savedJobs.length, 4) - 1 && <Separator className="mt-4" />}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <Star className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                <p className="text-sm">No saved jobs yet. Browse jobs and bookmark ones you like!</p>
+                <Button variant="outline" size="sm" className="mt-3" onClick={() => navigate('/jobs')}>Browse Jobs</Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         <Card className="card-shadow border-0">
           <CardHeader><CardTitle>Professional Summary</CardTitle></CardHeader>
           <CardContent>
@@ -251,6 +302,7 @@ const WorkerDashboard = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
