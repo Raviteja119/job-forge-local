@@ -119,6 +119,11 @@ const BrowseWorkers = () => {
           </CardContent>
         </Card>
 
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map(i => <WorkerCardSkeleton key={i} />)}
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredWorkers.map((worker) => (
             <Card key={worker.id} className="card-shadow hover-lift animate-fade-in border-0 hover-glow">
