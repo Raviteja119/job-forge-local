@@ -50,6 +50,7 @@ const EmployerDashboard = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-muted/30 via-background to-accent-warm/5">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Company Header */}
