@@ -10,6 +10,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import loginBg from '@/assets/login-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const Login = () => {
   const navigate = useNavigate();
