@@ -68,6 +68,7 @@ const Home = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative py-24 px-4 text-white overflow-hidden" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
