@@ -17,6 +17,8 @@ import PostJob from "./pages/PostJob";
 import BrowseWorkers from "./pages/BrowseWorkers";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Layout from "./components/common/Layout";
 import { AuthProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "./hooks/useTheme";
