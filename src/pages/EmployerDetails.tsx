@@ -10,6 +10,7 @@ import { Building2, MapPin, Phone, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import profileBg from '@/assets/profile-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const EmployerDetails = () => {
   const navigate = useNavigate();
