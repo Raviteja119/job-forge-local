@@ -303,6 +303,7 @@ const Jobs = () => {
         <JobDetailsDialog open={!!selectedJobForDetails} onOpenChange={(open) => !open && setSelectedJobForDetails(null)} job={selectedJobForDetails} onApply={() => setSelectedJobForApplication(selectedJobForDetails)} />
       )}
     </div>
+    </PageTransition>
   );
 };
 
