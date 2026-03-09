@@ -12,10 +12,12 @@ import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import { 
   Search, MapPin, Clock, Briefcase, Building, 
-  Star, Calendar, Filter, ChevronDown, ChevronUp, X
+  Star, Calendar, Filter, ChevronDown, ChevronUp, X, Bookmark
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { sampleJobs, Job } from '@/data/sampleJobs';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import PageTransition from '@/components/common/PageTransition';
 
 const Jobs = () => {
   const { toast } = useToast();
