@@ -260,12 +260,20 @@ const Jobs = () => {
 
                   <Separator />
 
-                  <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center">
                     <div className="space-y-1">
                       <p className="text-sm font-medium">Employer: {job.employerDetails.name}</p>
                       <p className="text-xs text-muted-foreground">{job.employerDetails.type} • Est. {job.employerDetails.established} • {job.employerDetails.employees} employees</p>
                     </div>
                     <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleBookmark(job.id)}
+                        className={isBookmarked(job.id) ? 'text-primary' : 'text-muted-foreground'}
+                      >
+                        <Bookmark className={`w-5 h-5 ${isBookmarked(job.id) ? 'fill-current' : ''}`} />
+                      </Button>
                       <Button variant="outline" size="sm" onClick={() => handleViewDetails(job)}>View Details</Button>
                       <Button onClick={() => handleApply(job)} variant="hero" size="sm">Apply Now</Button>
                     </div>
