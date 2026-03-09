@@ -545,6 +545,7 @@ const PostJob = () => {
         </form>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

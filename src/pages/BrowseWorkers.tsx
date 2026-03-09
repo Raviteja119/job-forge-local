@@ -376,6 +376,7 @@ const BrowseWorkers = () => {
         </Dialog>
       )}
     </div>
+    </PageTransition>
   );
 };
 

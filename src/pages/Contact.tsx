@@ -429,6 +429,7 @@ const Contact = () => {
         </section>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

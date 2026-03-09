@@ -513,6 +513,7 @@ const Profile = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
