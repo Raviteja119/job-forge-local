@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import JobApplicationDialog from '@/components/jobs/JobApplicationDialog';
 import JobDetailsDialog from '@/components/jobs/JobDetailsDialog';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { Separator } from '@/components/ui/separator';
 import { 
-  Search, MapPin, Clock, Filter, Briefcase, Building, 
-  Star, Calendar, DollarSign, Users 
+  Search, MapPin, Clock, Briefcase, Building, 
+  Star, Calendar, Filter, ChevronDown, ChevronUp, X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { sampleJobs, Job } from '@/data/sampleJobs';
@@ -22,51 +25,84 @@ const Jobs = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [selectedJobForApplication, setSelectedJobForApplication] = useState<Job | null>(null);
   const [selectedJobForDetails, setSelectedJobForDetails] = useState<Job | null>(null);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
+  // Advanced filters
+  const [jobTypeFilters, setJobTypeFilters] = useState<string[]>([]);
+  const [experienceFilter, setExperienceFilter] = useState('');
+  const [salaryRange, setSalaryRange] = useState([0, 5000]);
+  const [urgentOnly, setUrgentOnly] = useState(false);
 
   const jobs = sampleJobs;
 
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         job.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesLocation = !locationFilter || job.location.toLowerCase().includes(locationFilter.toLowerCase());
-    const matchesCategory = !categoryFilter || categoryFilter === 'all' || job.category === categoryFilter;
-    
-    return matchesSearch && matchesLocation && matchesCategory;
-  });
+  const filteredJobs = useMemo(() => {
+    let result = jobs.filter(job => {
+      const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           job.skills.some(skill => skill.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesLocation = !locationFilter || job.location.toLowerCase().includes(locationFilter.toLowerCase());
+      const matchesCategory = !categoryFilter || categoryFilter === 'all' || job.category === categoryFilter;
+      const matchesJobType = jobTypeFilters.length === 0 || jobTypeFilters.includes(job.type);
+      const matchesUrgent = !urgentOnly || job.urgency !== null;
+      
+      // Parse wage for salary filter
+      const wageNum = parseInt(job.wage.replace(/[^\d]/g, ''));
+      const matchesSalary = wageNum >= salaryRange[0] && wageNum <= salaryRange[1];
+      
+      return matchesSearch && matchesLocation && matchesCategory && matchesJobType && matchesUrgent && matchesSalary;
+    });
 
-  const handleApply = (job: Job) => {
-    setSelectedJobForApplication(job);
+    // Sort
+    if (sortBy === 'salary-high') {
+      result.sort((a, b) => parseInt(b.wage.replace(/[^\d]/g, '')) - parseInt(a.wage.replace(/[^\d]/g, '')));
+    } else if (sortBy === 'salary-low') {
+      result.sort((a, b) => parseInt(a.wage.replace(/[^\d]/g, '')) - parseInt(b.wage.replace(/[^\d]/g, '')));
+    }
+
+    return result;
+  }, [jobs, searchQuery, locationFilter, categoryFilter, jobTypeFilters, urgentOnly, salaryRange, sortBy]);
+
+  const handleApply = (job: Job) => setSelectedJobForApplication(job);
+  const handleViewDetails = (job: Job) => setSelectedJobForDetails(job);
+
+  const toggleJobType = (type: string) => {
+    setJobTypeFilters(prev => prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]);
   };
 
-  const handleViewDetails = (job: Job) => {
-    setSelectedJobForDetails(job);
+  const clearAllFilters = () => {
+    setSearchQuery('');
+    setLocationFilter('');
+    setCategoryFilter('');
+    setJobTypeFilters([]);
+    setExperienceFilter('');
+    setSalaryRange([0, 5000]);
+    setUrgentOnly(false);
+    setSortBy('newest');
   };
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star
-        key={i}
-        className={`w-3 h-3 ${
-          i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-        }`}
-      />
-    ));
-  };
+  const activeFilterCount = [
+    categoryFilter && categoryFilter !== 'all',
+    jobTypeFilters.length > 0,
+    urgentOnly,
+    salaryRange[0] > 0 || salaryRange[1] < 5000,
+  ].filter(Boolean).length;
+
+  const renderStars = (rating: number) => (
+    Array.from({ length: 5 }, (_, i) => (
+      <Star key={i} className={`w-3 h-3 ${i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
+    ))
+  );
 
   const getDaysAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(Math.abs(new Date().getTime() - new Date(dateString).getTime()) / (1000 * 60 * 60 * 24));
     return diffDays;
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-muted/30">
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-b from-muted/30 to-background">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-4 animate-fade-in">
+          <Badge variant="secondary">Job Listings</Badge>
           <h1 className="text-4xl font-bold text-foreground">Available Jobs</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Discover local job opportunities that match your skills and experience
@@ -74,64 +110,96 @@ const Jobs = () => {
         </div>
 
         {/* Search and Filters */}
-        <Card className="card-shadow animate-fade-in hover-glow border-0">
+        <Card className="card-shadow animate-fade-in border-0">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground transition-fast" />
-                  <Input
-                    placeholder="Search jobs by title, company, or skill..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 transition-fast focus:ring-2 focus:ring-primary/20"
-                  />
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Search jobs by title, company, or skill..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" />
                 </div>
                 <div className="flex-1 relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground transition-fast" />
-                  <Input
-                    placeholder="Location..."
-                    value={locationFilter}
-                    onChange={(e) => setLocationFilter(e.target.value)}
-                    className="pl-10 transition-fast focus:ring-2 focus:ring-primary/20"
-                  />
+                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Location..." value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} className="pl-10" />
                 </div>
                 <Select onValueChange={setCategoryFilter}>
-                  <SelectTrigger className="w-full md:w-48">
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
+                  <SelectTrigger className="w-full md:w-48"><SelectValue placeholder="Category" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="Electrical">Electrical</SelectItem>
-                    <SelectItem value="Carpentry">Carpentry</SelectItem>
-                    <SelectItem value="Painting">Painting</SelectItem>
-                    <SelectItem value="Plumbing">Plumbing</SelectItem>
-                    <SelectItem value="Welding">Welding</SelectItem>
-                    <SelectItem value="Masonry">Masonry</SelectItem>
-                    <SelectItem value="HVAC">HVAC</SelectItem>
-                    <SelectItem value="Landscaping">Landscaping</SelectItem>
-                    <SelectItem value="Roofing">Roofing</SelectItem>
-                    <SelectItem value="Transportation">Transportation</SelectItem>
+                    {['Electrical', 'Carpentry', 'Painting', 'Plumbing', 'Welding', 'Masonry', 'HVAC', 'Landscaping', 'Roofing', 'Transportation'].map(cat => (
+                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-              
+
+              {/* Advanced Filter Toggle */}
               <div className="flex justify-between items-center">
-                <p className="text-sm text-muted-foreground">
-                  Showing {filteredJobs.length} of {jobs.length} jobs
-                </p>
-                <Select onValueChange={setSortBy}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newest">Newest First</SelectItem>
-                    <SelectItem value="oldest">Oldest First</SelectItem>
-                    <SelectItem value="salary-high">Highest Salary</SelectItem>
-                    <SelectItem value="salary-low">Lowest Salary</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Button variant="ghost" size="sm" onClick={() => setShowAdvancedFilters(!showAdvancedFilters)} className="text-primary">
+                  <Filter className="w-4 h-4 mr-2" />
+                  Advanced Filters
+                  {activeFilterCount > 0 && <Badge className="ml-2 bg-primary text-primary-foreground">{activeFilterCount}</Badge>}
+                  {showAdvancedFilters ? <ChevronUp className="w-4 h-4 ml-1" /> : <ChevronDown className="w-4 h-4 ml-1" />}
+                </Button>
+                <div className="flex items-center gap-4">
+                  {activeFilterCount > 0 && (
+                    <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-destructive">
+                      <X className="w-4 h-4 mr-1" />Clear all
+                    </Button>
+                  )}
+                  <p className="text-sm text-muted-foreground">{filteredJobs.length} of {jobs.length} jobs</p>
+                  <Select onValueChange={setSortBy}>
+                    <SelectTrigger className="w-44"><SelectValue placeholder="Sort by" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="newest">Newest First</SelectItem>
+                      <SelectItem value="oldest">Oldest First</SelectItem>
+                      <SelectItem value="salary-high">Highest Salary</SelectItem>
+                      <SelectItem value="salary-low">Lowest Salary</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
+
+              {/* Advanced Filters Panel */}
+              {showAdvancedFilters && (
+                <div className="border-t border-border pt-4 animate-fade-in">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Job Type */}
+                    <div className="space-y-3">
+                      <Label className="font-semibold">Job Type</Label>
+                      <div className="space-y-2">
+                        {['Full-time', 'Part-time', 'Contract', 'Temporary'].map(type => (
+                          <div key={type} className="flex items-center space-x-2">
+                            <Checkbox checked={jobTypeFilters.includes(type)} onCheckedChange={() => toggleJobType(type)} />
+                            <Label className="text-sm font-normal cursor-pointer">{type}</Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Salary Range */}
+                    <div className="space-y-3">
+                      <Label className="font-semibold">Salary Range (₹/hr)</Label>
+                      <Slider value={salaryRange} onValueChange={setSalaryRange} min={0} max={5000} step={100} className="mt-6" />
+                      <div className="flex justify-between text-sm text-muted-foreground">
+                        <span>₹{salaryRange[0]}</span>
+                        <span>₹{salaryRange[1]}</span>
+                      </div>
+                    </div>
+
+                    {/* Other Filters */}
+                    <div className="space-y-3">
+                      <Label className="font-semibold">Other Filters</Label>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox checked={urgentOnly} onCheckedChange={(c) => setUrgentOnly(!!c)} />
+                          <Label className="text-sm font-normal cursor-pointer">Urgent hiring only</Label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -139,52 +207,26 @@ const Jobs = () => {
         {/* Job Listings */}
         <div className="space-y-6">
           {filteredJobs.map((job, index) => (
-            <Card key={job.id} className={`card-shadow hover-lift animate-fade-in border-0 hover-glow stagger-delay-${Math.min(index + 1, 6)}`}>
+            <Card key={job.id} className={`card-shadow hover-lift animate-fade-in border-0`} style={{ animationDelay: `${Math.min(index, 5) * 0.05}s` }}>
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  {/* Job Header */}
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <h3 className="text-xl font-bold text-foreground">{job.title}</h3>
-                        {job.urgency && (
-                          <Badge variant="destructive" className="text-xs">
-                            {job.urgency}
-                          </Badge>
-                        )}
+                        {job.urgency && <Badge variant="destructive" className="text-xs">{job.urgency}</Badge>}
                       </div>
-                      
                       <div className="flex items-center gap-4 text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Building className="w-4 h-4" />
-                          <span className="font-medium text-primary">{job.company}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          {renderStars(job.companyRating)}
-                          <span className="text-sm">({job.companyRating})</span>
-                        </div>
+                        <div className="flex items-center gap-1"><Building className="w-4 h-4" /><span className="font-medium text-primary">{job.company}</span></div>
+                        <div className="flex items-center gap-1">{renderStars(job.companyRating)}<span className="text-sm">({job.companyRating})</span></div>
                       </div>
-                      
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {job.location}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Briefcase className="w-4 h-4" />
-                          {job.type}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          {job.duration}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {getDaysAgo(job.postedDate)} days ago
-                        </div>
+                        <div className="flex items-center gap-1"><MapPin className="w-4 h-4" />{job.location}</div>
+                        <div className="flex items-center gap-1"><Briefcase className="w-4 h-4" />{job.type}</div>
+                        <div className="flex items-center gap-1"><Clock className="w-4 h-4" />{job.duration}</div>
+                        <div className="flex items-center gap-1"><Calendar className="w-4 h-4" />{getDaysAgo(job.postedDate)} days ago</div>
                       </div>
                     </div>
-                    
                     <div className="text-right space-y-2">
                       <div className="text-2xl font-bold text-success">{job.wage}</div>
                       <div className="text-sm text-muted-foreground">{job.wageRange}</div>
@@ -194,63 +236,34 @@ const Jobs = () => {
 
                   <Separator />
 
-                  {/* Job Description */}
                   <div className="space-y-3">
-                    <p className="text-muted-foreground">{job.description}</p>
-                    
+                    <p className="text-muted-foreground line-clamp-2">{job.description}</p>
                     <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <h4 className="font-semibold mb-2 text-primary">Required Skills</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {job.skills.map((skill) => (
-                              <Badge key={skill} variant="outline" className="text-xs hover:bg-primary hover:text-primary-foreground transition-fast">
-                                {skill}
-                              </Badge>
-                            ))}
-                          </div>
+                      <div>
+                        <h4 className="font-semibold mb-2 text-primary">Required Skills</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {job.skills.map(skill => <Badge key={skill} variant="outline" className="text-xs">{skill}</Badge>)}
                         </div>
-                        
-                        <div>
-                          <h4 className="font-semibold mb-2 text-success">Benefits</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {job.benefits.map((benefit) => (
-                              <Badge key={benefit} variant="secondary" className="text-xs">
-                                {benefit}
-                              </Badge>
-                            ))}
-                          </div>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold mb-2 text-success">Benefits</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {job.benefits.map(benefit => <Badge key={benefit} variant="secondary" className="text-xs">{benefit}</Badge>)}
                         </div>
+                      </div>
                     </div>
                   </div>
 
                   <Separator />
 
-                  {/* Actions */}
                   <div className="flex justify-between items-center">
                     <div className="space-y-1">
                       <p className="text-sm font-medium">Employer: {job.employerDetails.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {job.employerDetails.type} • Est. {job.employerDetails.established} • {job.employerDetails.employees} employees
-                      </p>
+                      <p className="text-xs text-muted-foreground">{job.employerDetails.type} • Est. {job.employerDetails.established} • {job.employerDetails.employees} employees</p>
                     </div>
-                    
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewDetails(job)}
-                        className="transition-smooth hover:border-primary hover:text-primary"
-                      >
-                        View Details
-                      </Button>
-                      <Button
-                        onClick={() => handleApply(job)}
-                        variant="hero"
-                        size="sm"
-                        className="transition-smooth"
-                      >
-                        Apply Now
-                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleViewDetails(job)}>View Details</Button>
+                      <Button onClick={() => handleApply(job)} variant="hero" size="sm">Apply Now</Button>
                     </div>
                   </div>
                 </div>
@@ -262,31 +275,20 @@ const Jobs = () => {
         {filteredJobs.length === 0 && (
           <Card className="card-shadow animate-fade-in border-0">
             <CardContent className="p-12 text-center">
-              <Briefcase className="w-16 h-16 text-muted-foreground mx-auto mb-4 animate-scale-in" />
+              <Briefcase className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No jobs found</h3>
-              <p className="text-muted-foreground">
-                Try adjusting your search criteria or check back later for new opportunities.
-              </p>
+              <p className="text-muted-foreground mb-4">Try adjusting your search criteria or filters.</p>
+              <Button onClick={clearAllFilters} variant="outline">Clear all filters</Button>
             </CardContent>
           </Card>
         )}
       </div>
 
       {selectedJobForApplication && (
-        <JobApplicationDialog
-          open={!!selectedJobForApplication}
-          onOpenChange={(open) => !open && setSelectedJobForApplication(null)}
-          job={selectedJobForApplication}
-        />
+        <JobApplicationDialog open={!!selectedJobForApplication} onOpenChange={(open) => !open && setSelectedJobForApplication(null)} job={selectedJobForApplication} />
       )}
-
       {selectedJobForDetails && (
-        <JobDetailsDialog
-          open={!!selectedJobForDetails}
-          onOpenChange={(open) => !open && setSelectedJobForDetails(null)}
-          job={selectedJobForDetails}
-          onApply={() => setSelectedJobForApplication(selectedJobForDetails)}
-        />
+        <JobDetailsDialog open={!!selectedJobForDetails} onOpenChange={(open) => !open && setSelectedJobForDetails(null)} job={selectedJobForDetails} onApply={() => setSelectedJobForApplication(selectedJobForDetails)} />
       )}
     </div>
   );
