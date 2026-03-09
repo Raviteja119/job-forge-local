@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Building2, Mail, Phone, MapPin, Briefcase, Users, CreditCard as Edit, Plus, Eye, CircleCheck as CheckCircle, Clock, TrendingUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import PageTransition from '@/components/common/PageTransition';
 
 const EmployerDashboard = () => {
   const navigate = useNavigate();
