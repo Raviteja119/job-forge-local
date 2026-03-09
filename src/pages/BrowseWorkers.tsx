@@ -16,6 +16,8 @@ import { Separator } from '@/components/ui/separator';
 import { Search, MapPin, Star, Award, Clock, Briefcase, CircleCheck as CheckCircle2, MessageSquare, Phone, Mail, TrendingUp } from 'lucide-react';
 import { sampleWorkers, WorkerProfile } from '@/data/sampleWorkers';
 import { useToast } from '@/hooks/use-toast';
+import PageTransition from '@/components/common/PageTransition';
+import { WorkerCardSkeleton } from '@/components/common/LoadingSkeleton';
 
 const BrowseWorkers = () => {
   const { toast } = useToast();
