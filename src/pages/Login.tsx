@@ -243,6 +243,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

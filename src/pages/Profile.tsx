@@ -177,6 +177,7 @@ const Profile = () => {
   };
 
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-muted/30">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Header */}

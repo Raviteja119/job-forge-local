@@ -149,6 +149,7 @@ const RegisterSelection = () => {
         </div>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

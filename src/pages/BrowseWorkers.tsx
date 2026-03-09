@@ -215,8 +215,9 @@ const BrowseWorkers = () => {
             </Card>
           ))}
         </div>
+        )}
 
-        {filteredWorkers.length === 0 && (
+        {!isLoading && filteredWorkers.length === 0 && (
           <Card className="card-shadow animate-fade-in border-0">
             <CardContent className="p-12 text-center">
               <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />

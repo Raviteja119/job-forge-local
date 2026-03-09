@@ -138,7 +138,8 @@ const PostJob = () => {
     formData.contactEmail;
 
   return (
-    <div 
+    <PageTransition>
+    <div
       className="min-h-screen py-8 px-4 relative animate-fade-in"
       style={{
         backgroundImage: `url(${postJobBg})`,

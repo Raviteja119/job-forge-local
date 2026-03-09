@@ -347,6 +347,7 @@ const Register = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

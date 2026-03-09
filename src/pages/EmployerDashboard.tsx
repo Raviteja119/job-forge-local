@@ -213,6 +213,7 @@ const EmployerDashboard = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 

@@ -348,6 +348,7 @@ const WorkerDetails = () => {
         </Card>
       </div>
     </div>
+    </PageTransition>
   );
 };
 
