@@ -64,7 +64,10 @@ const WorkerDashboard = () => {
     ));
   };
 
+  const savedJobs = sampleJobs.filter(job => bookmarks.includes(String(job.id)));
+
   return (
+    <PageTransition>
     <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-muted/30 via-background to-primary/5">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Header */}
