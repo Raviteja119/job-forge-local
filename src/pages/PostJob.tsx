@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import postJobBg from '@/assets/post-job-bg.jpg';
+import PageTransition from '@/components/common/PageTransition';
 
 const PostJob = () => {
   const navigate = useNavigate();
