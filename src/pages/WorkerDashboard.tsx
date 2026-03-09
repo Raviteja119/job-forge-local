@@ -10,6 +10,9 @@ import {
   CheckCircle, Edit, Award, TrendingUp, Search, Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import PageTransition from '@/components/common/PageTransition';
+import { useBookmarks } from '@/hooks/useBookmarks';
+import { sampleJobs } from '@/data/sampleJobs';
 
 const WorkerDashboard = () => {
   const navigate = useNavigate();
